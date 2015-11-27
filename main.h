@@ -37,10 +37,10 @@
 #define MSG_ERROR_RAND  "La cota inferior debe ser menor a la superior\n\n"
 #define MSG_ERROR_GRAPH_INPUT "La opcion ingresada es incorrecta.\n\n"
 #define MSG_ERROR_GRAPH_LOG "No se puede hacer el logaritmo e de un numero negativo.\n\n"
-#define MSG_ERROR_INPUT "Parametro de entrada mal ingresado"
-#define MSG_ERROR_ARG "error de argumento de entrada"
-#define MSG_ERROR_ARG_PRESITION "Error en la precision del argumento"
-#define MSG_ERROR_MEMORY "error de memoria"
+#define MSG_ERROR_INPUT "Parametro de entrada mal ingresado\n"
+#define MSG_ERROR_ARG "error de argumento de entrada\n"
+#define MSG_ERROR_ARG_PRESITION "Error en la precision del argumento\n"
+#define MSG_ERROR_MEMORY "error de memoria\n"
 
 /*--Tamaño--*/
 #ifndef __PIXEL_LENGTH__
@@ -94,6 +94,8 @@ typedef struct arg
 {
     int presition;
     int calcType;
+    FILE* input;
+    FILE* output;
 }t_arg;
 #endif
 

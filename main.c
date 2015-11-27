@@ -18,69 +18,79 @@ int main(int argc,char* argv[])
     option_t option;
     bool_t errorFlag = FALSE;
     t_arg arg;
+    int count;
     if (argc == 0)
     {
         printf(MSG_ERROR_ARG);
         return EXIT_FAILURE;
     }
-    if (strcmp(argv[1],"superCalc") == 0)
-    {
-        arg.presition = 100;
-        if (atoi(argv[3]) != 0)
-            arg.presition = atoi(argv[3]);
-        if (arg.presition < 1)
-        {
-            printf(MSG_ERROR_ARG_PRESITION);
-            errorFlag = TRUE;
+    else {
+        for (count = 1; count<4;count++) {
+            /*Para agregar los nombres o rutas de archivos necesito modificar primero las funciones, para saber como transmitir*/
+            /*la informacion*/
+            if (strcmp(argv[count],"-p") == 0){
+                arg.presition = 100;
+                if (atoi(argv[count+1]) != 0)
+                    arg.presition = atoi(argv[count+1]);
+                if (arg.presition < 1)
+                {
+                    printf(MSG_ERROR_ARG_PRESITION);
+                    errorFlag = TRUE;
+                }
+            }
+            if (strcmp(argv[count],"superCalc") == 0){
+                superCalc(arg.presition);
+                break;
+            }
+            else if ((strcmp(argv[count],"simpleCalc") == 0))
+            {
+                printMenu();
+                option = askOption();      /* Le pido la opcion al usuario */
+                if(option == OPT_GRAPH)                    /* si la opcion es graficador */
+                {
+                    optGraph = askFunction(&errorFlag);               /* pedir los parametros*/
+                    funcion = SolveFunction(optGraph,&errorFlag);      /* resolver la funcion pedida */
+                    functionToGraph(funcion,&errorFlag);               /* graficarla */
+                }
+                else if(option == OPT_FACT || option == OPT_BIN)      /* Si la opcion entrega un long como resultado ir al menu long */
+                {
+                    ansLong = longMenu(option, &errorFlag);
+                    if (errorFlag == TRUE)              /* si hay error en las operaciones: Salir */
+                    {
+                        return EXIT_FAILURE;
+                    }
+                    else                                /*si no hay error, imprimir el resultado y salir */
+                    {
+                        printAnsLong(ansLong);
+                        return EXIT_SUCCESS;
+                    }
+                }
+                else if(option>9 ||option<1)
+                {
+                    errorFlag = TRUE;
+                    printf(MSG_ERROR_OPTION);
+                    return EXIT_FAILURE;
+                }
+                else
+                {
+                    ansFloat = floatMenu(option, &errorFlag);
+                    if (errorFlag == TRUE)      /* si hay error en las operaciones: Salir */
+                    {
+                        return EXIT_FAILURE;
+                    }
+                    else
+                    {
+                        printAnsFloat(ansFloat);        /*si no hay error, imprimir el resultado y salir */
+                        return EXIT_SUCCESS;
+                    }
+                }
+                break;
+            }
+            else if (count == 3)
+            {
+                printf(MSG_ERROR_INPUT);
+            }
         }
-        superCalc(arg.presition);
     }
-    else if ((strcmp(argv[1],"simpleCalc") == 0))
-    {
-        printMenu();
-        option = askOption();      /* Le pido la opcion al usuario */
-        if(option == OPT_GRAPH)                    /* si la opcion es graficador */
-        {
-            optGraph = askFunction(&errorFlag);               /* pedir los parametros*/
-            funcion = SolveFunction(optGraph,&errorFlag);      /* resolver la funcion pedida */
-            functionToGraph(funcion,&errorFlag);               /* graficarla */
-        }
-        else if(option == OPT_FACT || option == OPT_BIN)      /* Si la opcion entrega un long como resultado ir al menu long */
-        {
-            ansLong = longMenu(option, &errorFlag);
-            if (errorFlag == TRUE)              /* si hay error en las operaciones: Salir */
-            {
-                return EXIT_FAILURE;
-            }
-            else                                /*si no hay error, imprimir el resultado y salir */
-            {
-                printAnsLong(ansLong);
-                return EXIT_SUCCESS;
-            }
-        }
-        else if(option>9 ||option<1)
-        {
-            errorFlag = TRUE;
-            printf(MSG_ERROR_OPTION);
-            return EXIT_FAILURE;
-        }
-        else
-        {
-            ansFloat = floatMenu(option, &errorFlag);
-            if (errorFlag == TRUE)      /* si hay error en las operaciones: Salir */
-            {
-                return EXIT_FAILURE;
-            }
-            else
-            {
-                printAnsFloat(ansFloat);        /*si no hay error, imprimir el resultado y salir */
-                return EXIT_SUCCESS;
-            }
-        }
-    }
-    else
-    {
-        printf(MSG_ERROR_INPUT);
-    }
-return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
