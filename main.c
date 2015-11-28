@@ -51,6 +51,13 @@ int main(int argc,char* argv[]) {
             }
             else strcpy (arg.output, argv[count+1]);
         }
+        if (strcmp(argv[count],"-i") == 0){
+            arg.input = (char*)malloc (sizeof(char)*strlen(argv[count+1]));
+            if (arg.input==NULL){
+                printf(MSG_ERROR_MEMORY);
+            }
+            else strcpy (arg.input, argv[count+1]);
+        }
     };
     if (arg.calcType == NO_ASIGN){
         printf(MSG_ERROR_ARG);
