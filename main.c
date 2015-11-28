@@ -16,8 +16,8 @@ int main(int argc,char* argv[]) {
     bool_t errorFlag = FALSE;
     t_arg arg;
     int count;
-    arg.input[0]=0;
-    arg.output[0]=0;
+    arg.input=NULL;
+    arg.output=NULL;
     if (argc == 1) {
         printf(MSG_ERROR_ARG);
         return EXIT_FAILURE;
@@ -45,15 +45,23 @@ int main(int argc,char* argv[]) {
             printf(MSG_ERROR_INPUT);
         }
         if (strcmp(argv[count],"-o") == 0){
-            strcpy (arg.output, argv[count+1]);
+            arg.output = (char*)malloc (sizeof(char)*strlen(argv[count+1]));
+            if (arg.output==NULL){
+                printf(MSG_ERROR_MEMORY);
+            }
+            else strcpy (arg.output, argv[count+1]);
         }
     };
     if (arg.calcType == NO_ASIGN){
         printf(MSG_ERROR_ARG);
+        free (arg.output);
+        free (arg.input);
         return EXIT_FAILURE;
     };
     if (arg.calcType == SUPER_SEL){
-        superCalc(arg.presition,arg.input ,arg.output);
+        superCalc(arg.presition,arg.input, arg.output);
+        free (arg.output);
+        free (arg.input);
     };
     if (arg.calcType == SIMPLE_SEL){
         printMenu();
@@ -62,32 +70,44 @@ int main(int argc,char* argv[]) {
             optGraph = askFunction(&errorFlag);               /* pedir los parametros*/
             funcion = SolveFunction(optGraph,&errorFlag);      /* resolver la funcion pedida */
             functionToGraph(funcion,&errorFlag,arg.output);               /* graficarla */
+            free (arg.output);
+            free (arg.input);
         }
         else if(option == OPT_FACT || option == OPT_BIN) {     /* Si la opcion entrega un long como resultado ir al menu long */
             ansLong = longMenu(option, &errorFlag);
             if (errorFlag == TRUE) {             /* si hay error en las operaciones: Salir */
+                free (arg.output);
+                free (arg.input);
                 return EXIT_FAILURE;
             }
             else {                               /*si no hay error, imprimir el resultado y salir */
                 printAnsLong(ansLong);
+                free (arg.output);
+                free (arg.input);
                 return EXIT_SUCCESS;
             }
         }
         else if(option>9 ||option<1) {
             errorFlag = TRUE;
             printf(MSG_ERROR_OPTION);
+            free (arg.output);
+            free (arg.input);
             return EXIT_FAILURE;
         }
         else {
             ansFloat = floatMenu(option, &errorFlag);
-            if (errorFlag == TRUE) {     /* si hay error en las operaciones: Salir */    
+            if (errorFlag == TRUE) {     /* si hay error en las operaciones: Salir */
+                free (arg.output);
+                free (arg.input);    
                 return EXIT_FAILURE;
             }
             else {
                 printAnsFloat(ansFloat);        /*si no hay error, imprimir el resultado y salir */
+                free (arg.output);
+                free (arg.input);
                 return EXIT_SUCCESS;
             }
         }
-    }    
+    }
     return EXIT_SUCCESS;
 }

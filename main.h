@@ -101,8 +101,8 @@ typedef struct arg
 {
     int presition;
     calc_type_t calcType;
-    char input [FILE_NAME_MAX];
-    char output [FILE_NAME_MAX];
+    char *input;
+    char *output;
 }t_arg;
 #endif
 
