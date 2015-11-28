@@ -66,6 +66,12 @@ typedef enum{OPT_LOG=1,OPT_EXPO=2}option_esp_t;
 typedef enum{TRUE=1,FALSE=0}bool_t;
 #endif
 
+#ifndef __CALC_TYPE_T__
+#define __CALC_TYPE_T__
+typedef enum calc_type
+{NO_ASIGN=0, SUPER_SEL=1,SIMPLE_SEL=2}calc_type_t;
+#endif
+
 #ifndef __GRAPH_OPTION_T__
 #define __GRAPH_OPTION_T__
 typedef struct graphOption
@@ -93,7 +99,7 @@ typedef struct func
 typedef struct arg
 {
     int presition;
-    int calcType;
+    calc_type_t calcType;
     FILE* input;
     FILE* output;
 }t_arg;
