@@ -5,7 +5,7 @@
 #include "main.h"
 
 /*----------SUPERCALC---------------*/
-void superCalc(int precision,char input[FILE_NAME_MAX],char output[FILE_NAME_MAX])
+void superCalc(int precision,char * input,char * output)
 {
     /*VARIABLES*/
     char* buffer=NULL;
