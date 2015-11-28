@@ -25,22 +25,21 @@ int main(int argc,char* argv[])
         return EXIT_FAILURE;
     }
     else {
-        for (count = 1; count<4;count++) {
+        for (count = 1; count<argc;count++) {
             /*Para agregar los nombres o rutas de archivos necesito modificar primero las funciones, para saber como transmitir*/
             /*la informacion*/
             if (strcmp(argv[count],"-p") == 0){
                 arg.presition = 100;
-                if (atoi(argv[count+1]) != 0)
-                    arg.presition = atoi(argv[count+1]);
-                if (arg.presition < 1)
+                if (atoi(argv[count+1]) <= 0)
                 {
                     printf(MSG_ERROR_ARG_PRESITION);
                     errorFlag = TRUE;
                 }
+                else arg.presition = atoi(argv[count+1]);
             }
             if (strcmp(argv[count],"superCalc") == 0){
                 superCalc(arg.presition);
-                break;
+                break; /*una vez que encuentra este argumento quiero salir del loop, ya que no tiene sentido seguir recorriendo*/
             }
             else if ((strcmp(argv[count],"simpleCalc") == 0))
             {
@@ -84,9 +83,9 @@ int main(int argc,char* argv[])
                         return EXIT_SUCCESS;
                     }
                 }
-                break;
+                break; /*una vez que encuentra este argumento quiero salir del loop, ya que no tiene sentido seguir recorriendo*/
             }
-            else if (count == 3)
+            else if (count == argc)
             {
                 printf(MSG_ERROR_INPUT);
             }
