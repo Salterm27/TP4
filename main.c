@@ -16,6 +16,8 @@ int main(int argc,char* argv[]) {
     bool_t errorFlag = FALSE;
     t_arg arg;
     int count;
+    arg.input[0]=0;
+    arg.output[0]=0;
     if (argc == 1) {
         printf(MSG_ERROR_ARG);
         return EXIT_FAILURE;
@@ -42,13 +44,16 @@ int main(int argc,char* argv[]) {
         else if (count == argc) {
             printf(MSG_ERROR_INPUT);
         }
+        if (strcmp(argv[count],"-o") == 0){
+            strcpy (arg.output, argv[count+1]);
+        }
     };
     if (arg.calcType == NO_ASIGN){
         printf(MSG_ERROR_ARG);
         return EXIT_FAILURE;
     };
     if (arg.calcType == SUPER_SEL){
-        superCalc(arg.presition);
+        superCalc(arg.presition,arg.input ,arg.output);
     };
     if (arg.calcType == SIMPLE_SEL){
         printMenu();
@@ -56,9 +61,9 @@ int main(int argc,char* argv[]) {
         if(option == OPT_GRAPH) {                   /* si la opcion es graficador */
             optGraph = askFunction(&errorFlag);               /* pedir los parametros*/
             funcion = SolveFunction(optGraph,&errorFlag);      /* resolver la funcion pedida */
-            functionToGraph(funcion,&errorFlag);               /* graficarla */
+            functionToGraph(funcion,&errorFlag,arg.output);               /* graficarla */
         }
-        if(option == OPT_FACT || option == OPT_BIN) {     /* Si la opcion entrega un long como resultado ir al menu long */
+        else if(option == OPT_FACT || option == OPT_BIN) {     /* Si la opcion entrega un long como resultado ir al menu long */
             ansLong = longMenu(option, &errorFlag);
             if (errorFlag == TRUE) {             /* si hay error en las operaciones: Salir */
                 return EXIT_FAILURE;

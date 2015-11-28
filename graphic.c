@@ -193,7 +193,7 @@ t_func SolveFunction(t_graph_opt opt,bool_t* errorFlagPointer)
     return funcion;
 }
 /*------------------------------------------*/
-void functionToGraph(t_func funcion,bool_t* errorFlagPointer)
+void functionToGraph(t_func funcion,bool_t* errorFlagPointer,char output [FILE_NAME_MAX])
 {
 
     int x,y,i;
@@ -232,29 +232,45 @@ void functionToGraph(t_func funcion,bool_t* errorFlagPointer)
             if ((x<X_LENGTH_PIXELS && x>0) && (y<Y_LENGTH_PIXELS && y>0))
                 matGraph[y][x]=TRUE;
         }
-
-
-    printMatrizPMB(matGraph);
+    printMatrizPMB(matGraph,output);
     return;
 }
 /*------------------------------------------*/
-void printMatrizPMB(bool_t mat[Y_LENGTH_PIXELS][X_LENGTH_PIXELS])
+void printMatrizPMB(bool_t mat[Y_LENGTH_PIXELS][X_LENGTH_PIXELS], char output [FILE_NAME_MAX])
 {
     int x,y;
-    fprintf(stderr,"P1");       /* Header */
-    fprintf(stderr,"\n");
-    fprintf(stderr,"%d %d",Y_LENGTH_PIXELS,X_LENGTH_PIXELS); /* dimensiones de la matriz */
-    fprintf(stderr,"\n");
-    for (y=0;y<Y_LENGTH_PIXELS;y++)
-    {
-        for (x=0;x<X_LENGTH_PIXELS;x++)
+    FILE *fp = NULL;
+    fp = fopen (output,"w");
+    if (output[0]!=0){
+        fprintf(fp,"P1");       /* Header */
+        fprintf(fp,"\n");
+        fprintf(fp,"%d %d",Y_LENGTH_PIXELS,X_LENGTH_PIXELS); /* dimensiones de la matriz */
+        fprintf(fp,"\n");
+        for (y=0;y<Y_LENGTH_PIXELS;y++)
         {
-            fprintf(stderr,"%d ",mat[y][x]);
+            for (x=0;x<X_LENGTH_PIXELS;x++)
+            {
+                fprintf(fp,"%d ",mat[y][x]);
+            }
+        fprintf(fp,"\n");
         }
-    fprintf(stderr,"\n");
+        return;
     }
-
-    return;
+    else {
+        fprintf(stderr,"P1");       /* Header */
+        fprintf(stderr,"\n");
+        fprintf(stderr,"%d %d",Y_LENGTH_PIXELS,X_LENGTH_PIXELS); /* dimensiones de la matriz */
+        fprintf(stderr,"\n");
+        for (y=0;y<Y_LENGTH_PIXELS;y++)
+        {
+            for (x=0;x<X_LENGTH_PIXELS;x++)
+            {
+            fprintf(stderr,"%d ",mat[y][x]);
+            }
+        fprintf(stderr,"\n");
+        }
+        return;
+    }
 }
 /*------------------------------------------*/
 float xPixToGraph(int X)

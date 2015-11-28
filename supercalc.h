@@ -35,7 +35,7 @@ typedef struct operation
 
 #endif
 
-void superCalc(int);
+void superCalc(int, char [], char []);
 int parseOperation(char*,operation_t**,int,int);
 operation_t** addOperation(operation_t***,int*);
 void solveOperation(operation_t*,int);

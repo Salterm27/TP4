@@ -44,8 +44,9 @@
 
 /*--Tamaño--*/
 #ifndef __PIXEL_LENGTH__
-#define X_LENGTH_PIXELS 600
-#define Y_LENGTH_PIXELS 600
+#define X_LENGTH_PIXELS 600 /*es la resolucion del eje X del grafico*/
+#define Y_LENGTH_PIXELS 600 /*es la resolucion del eje Y del grafico*/
+#define FILE_NAME_MAX 50 /*es la longitud maxima del nombre del archivo*/
 #endif
 
 #ifndef __OPTION_T__
@@ -100,8 +101,8 @@ typedef struct arg
 {
     int presition;
     calc_type_t calcType;
-    FILE* input;
-    FILE* output;
+    char input [FILE_NAME_MAX];
+    char output [FILE_NAME_MAX];
 }t_arg;
 #endif
 

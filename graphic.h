@@ -92,8 +92,8 @@ typedef struct func
 t_graph_opt askFunction(bool_t*);
 t_func initializeXY(void);
 t_func SolveFunction(t_graph_opt,bool_t*);
-void functionToGraph(t_func,bool_t*);
-void printMatrizPMB(bool_t[Y_LENGTH_PIXELS][X_LENGTH_PIXELS]);
+void functionToGraph(t_func,bool_t*, char []);
+void printMatrizPMB(bool_t[Y_LENGTH_PIXELS][X_LENGTH_PIXELS], char []);
 /*--Transformaciones--*/
 float xPixToGraph(int X);
 int xGraphToPix(float X);
