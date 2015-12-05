@@ -44,7 +44,9 @@ void superCalc(int precision,char* input,char* output)
                 parseOperation(buffer,operations,cantOp,precision);
         }
     }
-
+    for (i=0; i<cantOp;i++) {
+    	printList((*(operations[i])).num1);
+    }
 }
 /*------------ AGREGAR OPERACION--------------*/
 operation_t** addOperation(operation_t*** operations,int* cantOp)
@@ -98,7 +100,6 @@ return *operations;
 int parseOperation(char* buffer,operation_t** operations,int cantOp,int precision)
 {
     int i=0,j=0;
-    short* bufferNum;
     /*INICIALIZO OPERACION*/
     (*(operations[cantOp-1])).num1 = NULL;
     (*(operations[cantOp-1])).num2 = NULL;
