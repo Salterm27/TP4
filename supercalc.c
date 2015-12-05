@@ -258,60 +258,34 @@ void solveOperation(operation_t* oper,int precision)
             }
     }
 }
-result_state_t addNumbers(operation_t* oper,int precision)
-{
-    int i,carry=0, resultado;
-    t_nodo *lista1, *lista2, *ans;
-    lista1=(*oper).num1;
-    lista2=(*oper).num2;
-    while (lista1->sig != NULL) /*recorre hasta el final*/
-        lista1=lista1->sig;
-    while (lista2->sig != NULL) /*recorre hasta el final*/
-        lista2=lista2->sig;
-    while (lista1 != NULL && lista2 != NULL)
-    {
-        
-        if (lista1 == NULL)
-            resultado = lista2->val+carry;
-        else if (lista2==NULL)
-            resultado = lista1->val+carry;
-        else 
-            resultado = lista1->val + lista2->val + carry;
-        if (resultado > 9) {
-            carry = resultado / 10;
-            resultado = resultado % 10;
-        }
-        else
-            carry = 0;
-        if (addValue(&ans,resultado) == EXIT_FAILURE)
-            return ERR;
-    }
-    ((*oper).ans) = ans;
-    while (ans != NULL) { /*recorre hasta el final*/
-        i++;
-        ans=ans->sig;
-    }
-    if (i>precision)
-        return OFW;
-    return OK;
-}
 
-/*----------SUMAS--------*/
-result_state_t addition(operation_t* oper,int precision)
+int superior(operation_t oper)
 {
-
-    /*si los 2 son - o +, se suman los numeros y se pone el signo que corresponda*/
-    if ((*oper).sign1 == TRUE && (*oper).sign2 == TRUE)
-    {
-        (*oper).signAns = TRUE;
-        return addNumbers(oper,precision);
+    int i=0,j=0;
+    t_nodo *listai, *listaj;
+    listai=(*oper).num1;
+    listaj=(*oper).num2;
+    while (listai->sig != NULL) { /*recorre hasta el final*/
+        listai=listai->sig;
+        i++
     }
-    if ((*oper).sign1 == FALSE && (*oper).sign2 == FALSE)
-    {
-        (*oper).signAns = FALSE;
-        return addNumbers(oper,precision);
+    while (listaj->sig != NULL) { /*recorre hasta el final*/
+        listaj=listaj->sig;
+        j++
     }
-    /*si no se restan*/
-    /*return substraction(oper,precision);*/
-    return ERR;
+    if (i < j)
+        return 2;
+    if (i > j)
+        return 1;
+    listai=(*oper).num1;
+    listaj=(*oper).num2;
+    while (listai != NULL){
+        if (listaj->val > listai->val)
+            return 2;
+        if (listaj->val < listai->val)
+            return 1;
+        istai=listai->sig;
+        listaj=listaj->sig;
+    }
+    return 0;
 }
