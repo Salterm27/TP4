@@ -57,7 +57,7 @@ void superCalc(int precision,char* input,char* output)
     	printf("\t");
     	printList((*(operations[i])).num2);
     	printf("\n");
-    	printList((*(operations[i])).ans);
+    	printListBackwards((*(operations[i])).ans);
     	printf("\n");
     }
 }
