@@ -264,7 +264,6 @@ void solveOperation(operation_t* oper,int precision)
             }
     }
 }
-
 result_state_t addNumbers(operation_t* oper,int precision)
 {
     int i,carry=0, resultado;
@@ -309,14 +308,24 @@ result_state_t addNumbers(operation_t* oper,int precision)
     if (i>precision)
         return OFW;
     return OK;
-    listaj=(*oper).num2;
-    while (listai != NULL){
-        if (listaj->val > listai->val)
-            return 2;
-        if (listaj->val < listai->val)
-            return 1;
-        istai=listai->sig;
-        listaj=listaj->sig;
+}
+
+/*----------SUMAS--------*/
+result_state_t addition(operation_t* oper,int precision)
+{
+
+    /*si los 2 son - o +, se suman los numeros y se pone el signo que corresponda*/
+    if ((*oper).sign1 == TRUE && (*oper).sign2 == TRUE)
+    {
+        (*oper).signAns = TRUE;
+        return addNumbers(oper,precision);
     }
-    return 0;
+    if ((*oper).sign1 == FALSE && (*oper).sign2 == FALSE)
+    {
+        (*oper).signAns = FALSE;
+        return addNumbers(oper,precision);
+    }
+    /*si no se restan*/
+    /*return substraction(oper,precision);*/
+    return ERR;
 }
