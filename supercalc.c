@@ -7,7 +7,7 @@
 void superCalc(int precision,char* input,char* output)
 {
     operation_t** operations;
-    int cantOp=0,i,j;
+    int cantOp=0,i;
     FILE* fp=NULL;
     char* buffer=(char*)calloc(precision*2+5,sizeof(char));
     if (buffer==NULL)
@@ -50,6 +50,8 @@ void superCalc(int precision,char* input,char* output)
     	printf("%c",(*(operations[i])).op);
     	printf("\t");
     	printList((*(operations[i])).num2);
+    	printf("\n");
+    	printList((*(operations[i])).ans);
     	printf("\n");
     }
 }
@@ -225,4 +227,91 @@ int addValue(t_nodo** listPointer,short value)
         list=list->ant;
     *listPointer = list;
     return EXIT_SUCCESS;
+}
+/*-------------RESOLVER OPERACION--------------*/
+void solveOperation(operation_t* oper,int precision)
+{
+    switch ((*oper).op)
+    {
+        case SUB:
+        {/*cambio el signo de la segunda operacion*/
+            if ((*oper).sign2==TRUE)
+                (*oper).sign2 = FALSE;
+            else (*oper).sign2 = TRUE;
+        }
+        case ADD:
+        {
+            (*oper).st = addition(oper,precision);
+            break;
+        }
+        case MUX:
+        {
+            /*SIGNO*/
+            (*oper).signAns = (*oper).sign2 ^ (*oper).sign1;
+            /*(*oper).st = multiply(oper,precision);*/
+            break;
+        }
+        default:
+            {
+                printf(MSG_ERROR_OPERATION);
+                (*oper).st = ERR;
+            }
+    }
+}
+result_state_t addNumbers(operation_t* oper,int precision)
+{
+    int i,carry=0, resultado;
+    t_nodo *lista1, *lista2, *ans;
+    lista1=(*oper).num1;
+    lista2=(*oper).num2;
+    while (lista1->sig != NULL) /*recorre hasta el final*/
+        lista1=lista1->sig;
+    while (lista2->sig != NULL) /*recorre hasta el final*/
+        lista2=lista2->sig;
+    while (lista1 != NULL && lista2 != NULL)
+    {
+        
+        if (lista1 == NULL)
+            resultado = lista2->val+carry;
+        else if (lista2==NULL)
+            resultado = lista1->val+carry;
+        else 
+            resultado = lista1->val + lista2->val + carry;
+        if (resultado > 9) {
+            carry = resultado / 10;
+            resultado = resultado % 10;
+        }
+        else
+            carry = 0;
+        if (addValue(&ans,resultado) == EXIT_FAILURE)
+            return ERR;
+    }
+    ((*oper).ans) = ans;
+    while (ans != NULL) { /*recorre hasta el final*/
+        i++;
+        ans=ans->sig;
+    }
+    if (i>precision)
+        return OFW;
+    return OK;
+}
+
+/*----------SUMAS--------*/
+result_state_t addition(operation_t* oper,int precision)
+{
+
+    /*si los 2 son - o +, se suman los numeros y se pone el signo que corresponda*/
+    if ((*oper).sign1 == TRUE && (*oper).sign2 == TRUE)
+    {
+        (*oper).signAns = TRUE;
+        return addNumbers(oper,precision);
+    }
+    if ((*oper).sign1 == FALSE && (*oper).sign2 == FALSE)
+    {
+        (*oper).signAns = FALSE;
+        return addNumbers(oper,precision);
+    }
+    /*si no se restan*/
+    /*return substraction(oper,precision);*/
+    return ERR;
 }

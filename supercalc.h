@@ -1,7 +1,7 @@
 #ifndef __SUPERCALC_H__
 #define __SUPERCALC_H__
 
-#define CALCULATE_TOLKEN "#calculate"
+#define CALCULATE_TOLKEN "#calculate\n"
 #define MSG_ERROR_OPERATION "Solo se puede multiplicar, restar o sumar"
 #define MSG_INFINITY "Infinito\n"
 
