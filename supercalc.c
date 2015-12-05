@@ -332,8 +332,8 @@ int superior(operation_t* oper)
 {
     int i=0,j=0;
     t_nodo *listai, *listaj;
-    listai=(*oper).num2;
-    listaj=(*oper).num1;
+    listai=(*oper).num1;
+    listaj=(*oper).num2;
     while (listai->sig != NULL) { /*recorre hasta el final*/
         listai=listai->sig;
         i++;
@@ -349,14 +349,13 @@ int superior(operation_t* oper)
     listai=(*oper).num1;
     listaj=(*oper).num2;
     while (listai != NULL){
-        if (listaj->val > listai->val)
+        if (listai->val < listaj->val )
             return 2;
-        if (listaj->val < listai->val)
+        if (listai->val > listaj->val)
             return 1;
         listai=listai->sig;
         listaj=listaj->sig;
     }
-
     return 0;
 }
 /*-----RESTAR NUMEROS---------*/
