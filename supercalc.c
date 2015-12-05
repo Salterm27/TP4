@@ -6,6 +6,7 @@
 /*----------SUPERCALC---------------*/
 void superCalc(int precision,char* input,char* output)
 {
+
     operation_t** operations;
     int cantOp=0,i;
     FILE* fp=NULL;
