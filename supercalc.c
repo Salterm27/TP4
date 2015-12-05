@@ -352,7 +352,7 @@ int superior(operation_t* oper)
         if (listaj->val > listai->val)
             return 2;
         if (listaj->val < listai->val)
-
+            return 1;
         listai=listai->sig;
         listaj=listaj->sig;
     }
