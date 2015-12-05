@@ -87,11 +87,11 @@ int addValue(t_nodo** listPointer,short value)
             printf(MSG_ERROR_MEMORY);
             return EXIT_FAILURE;
         }
-        list->ant = NULL;
+        list->ant = NULL; /*puede ser redundante*/
     }
     else
     {
-        while (list->sig != NULL)
+        while (list->sig != NULL) /*recorre hasta el final*/
             list=list->sig;
         list->sig =(t_nodo*)calloc(1,sizeof(t_nodo));
         if (list->sig == NULL)
@@ -102,9 +102,9 @@ int addValue(t_nodo** listPointer,short value)
         list->sig->ant = list;
         list=list->sig;
     }
-    list->sig = NULL;
+    list->sig = NULL; /*puede ser redundante*/
     list->val = value;
-    while (list->ant != NULL)
+    while (list->ant != NULL) /*recorre hasta el final*/
         list=list->ant;
     *listPointer = list;
     return EXIT_SUCCESS;
@@ -119,7 +119,7 @@ void printList(t_nodo* list)
 }
 void printListBackwards(t_nodo* list)
 {
-    while (list->sig != NULL)
+    while (list->sig != NULL) /*recorre hasta el final*/
         list=list->sig;
     while (list != NULL)
     {
@@ -132,11 +132,11 @@ void freeList(t_nodo* list)
 {
     if (list!=NULL)
     {
-        while(list->sig != NULL)
+        while(list->sig != NULL) /*recorre hasta el final*/
         {
             list=list->sig;
         }
-        while(list->ant != NULL)
+        while(list->ant != NULL) /*recorre hasta el principio y libera*/
         {
             list = list->ant;
             free(list->sig);

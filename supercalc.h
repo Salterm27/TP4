@@ -18,7 +18,13 @@ typedef struct
     short *num;
 }bignum_t;
 #endif
-
+#ifndef __NODO_T__
+#define __NODO_T__
+typedef struct nodo {
+	struct nodo *sig, *ant;
+	short val;
+}t_nodo;
+#endif
 #ifndef __OPERATION_T__
 #define __OPERATION_T__
 typedef enum{ADD='+',SUB='-',MUX='*'}op_t;
@@ -28,7 +34,7 @@ typedef enum{OK,NAN,OFW,ZERO,ERR}result_state_t;
 typedef struct operation
 {
     bool_t sign1,sign2,signAns;
-    bignum_t num1,num2,ans;
+    t_nodo *num1, *num2, *ans;
     op_t op;
     result_state_t st;
 }operation_t;
@@ -46,4 +52,8 @@ result_state_t addNumbers(operation_t* oper,int precision);
 result_state_t subNumbers(operation_t* oper,int precision);
 int superior(bignum_t,bignum_t);
 bignum_t multiply2(bignum_t a,bignum_t b,int precision);
+int addValue(t_nodo** listPointer,short value);
+void printList(t_nodo* list);
+void printListBackwards(t_nodo* list);
+void freeList(t_nodo* list);
 #endif
