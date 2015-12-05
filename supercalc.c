@@ -46,6 +46,11 @@ void superCalc(int precision,char* input,char* output)
     }
     for (i=0; i<cantOp;i++) {
     	printList((*(operations[i])).num1);
+    	printf("\t");
+    	printf("%c",(*(operations[i])).op);
+    	printf("\t");
+    	printList((*(operations[i])).num2);
+    	printf("\n");
     }
 }
 /*------------ AGREGAR OPERACION--------------*/
