@@ -309,7 +309,6 @@ result_state_t addNumbers(operation_t* oper,int precision)
         return OFW;
     return OK;
 }
-
 /*----------SUMAS--------*/
 result_state_t addition(operation_t* oper,int precision)
 {
@@ -329,19 +328,19 @@ result_state_t addition(operation_t* oper,int precision)
     /*return substraction(oper,precision);*/
     return ERR;
 }
-int superior(operation_t oper)
+int superior(operation_t* oper)
 {
-    int i=0,j=0,count;
+    int i=0,j=0;
     t_nodo *listai, *listaj;
     listai=(*oper).num1;
     listaj=(*oper).num2;
     while (listai->sig != NULL) { /*recorre hasta el final*/
         listai=listai->sig;
-        i++
+        i++;
     }
     while (listaj->sig != NULL) { /*recorre hasta el final*/
         listaj=listaj->sig;
-        j++
+        j++;
     }
     if (i < j)
         return 2;
@@ -354,9 +353,87 @@ int superior(operation_t oper)
             return 2;
         if (listaj->val < listai->val)
             
-        istai=listai->sig;
+        listai=listai->sig;
         listaj=listaj->sig;
     }
 
     return 0;
+}
+/*-----RESTAR NUMEROS---------*/
+result_state_t subNumbers(operation_t* oper,int precision)
+{
+    int i,borrow=0,resultado;
+    t_nodo *lista1, *lista2, *ans;
+    if (superior(oper) == 2)
+    {
+        lista1=(*oper).num2;
+        lista2=(*oper).num1;
+    }
+    else {
+        lista1=(*oper).num1;
+        lista2=(*oper).num2;
+    }
+    while (lista1->sig != NULL) /*recorre hasta el final*/
+        lista1=lista1->sig;
+    while (lista2->sig != NULL) /*recorre hasta el final*/
+        lista2=lista2->sig;
+    while (lista1 != NULL || lista2 != NULL)
+    {
+        if (lista1 == NULL){
+            resultado = lista2->val-borrow;
+            lista2=lista2->ant;
+        }
+        else if (lista2==NULL){
+            resultado = lista1->val-borrow;
+            lista1=lista1->ant;
+        }
+        else{
+            resultado = lista1->val - lista2->val - borrow;
+            lista2=lista2->ant;
+            lista1=lista1->ant;
+        }
+        if (resultado < 0) {
+            borrow = 1;
+            resultado = resultado + 10;
+        }
+        else
+            borrow = 0;
+        if (addValue(&ans,resultado) == EXIT_FAILURE)
+            return ERR;
+    }
+    (*oper).ans = ans;
+    while (ans != NULL) { /*recorre hasta el final*/
+        i++;
+        ans=ans->sig;
+    }
+    if (i>precision)
+        return OFW;
+    return OK;
+}
+/*-----RESTA-------*/
+result_state_t substraction(operation_t* oper,int precision)
+{
+
+    (*oper).signAns = FALSE; /*asumo resultado positivo*/
+    switch (superior(oper))
+    {
+        case 1: /* num1 > num2*/
+        {
+            if ((*oper).sign1 == TRUE)
+                (*oper).signAns = TRUE;
+            return subNumbers(oper,precision);
+        }
+        case 2: /* num2>num1 */
+        {
+            if ((*oper).sign2 == TRUE)
+                (*oper).signAns = TRUE;
+            return subNumbers(oper,precision);
+        }
+        default: /* iguales */
+        {
+            (*oper).signAns = FALSE;
+            addValue(&((*oper).ans),0);
+            return OK;
+        }
+    }
 }
