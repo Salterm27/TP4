@@ -4,7 +4,7 @@
 #include "supercalc.h"
 #include "main.h"
 /*----------SUPERCALC---------------*/
-void superCalc(int precision,char* input,char* output)
+int superCalc(int precision,char* input,char* output)
 {
 
     operation_t** operations;
@@ -14,6 +14,7 @@ void superCalc(int precision,char* input,char* output)
     if (buffer==NULL)
     {
         printf(MSG_ERROR_MEMORY);
+        return EXIT_FAILURE;
     }
     if (input != NULL)
     {
@@ -50,16 +51,25 @@ void superCalc(int precision,char* input,char* output)
     {
         solveOperation(operations[i],precision);
     }
-    for (i=0; i<cantOp;i++) {
-    	printList((*(operations[i])).num1);
-    	printf("\t");
-    	printf("%c",(*(operations[i])).op);
-    	printf("\t");
-    	printList((*(operations[i])).num2);
-    	printf("\n");
-    	printListBackwards((*(operations[i])).ans);
-    	printf("\n");
+    if(output != NULL)
+    {
+        fp = fopen(output,"w");
+        if (fp == NULL)
+        {
+            printf(MSG_ERROR_ARG);
+            return EXIT_FAILURE;
+        }
     }
+    else
+        fp = stdout;
+    for(i=0;i<cantOp;i++)
+    {
+        if ((*(operations[i])).signAns == TRUE)
+            fprintf(fp,"-");
+        printListBackwards((*(operations[i])).ans,fp);
+        fprintf(fp,"\n");
+    }
+    return EXIT_SUCCESS;
 }
 /*------------ AGREGAR OPERACION--------------*/
 operation_t** addOperation(operation_t*** operations,int* cantOp)
@@ -165,20 +175,20 @@ int parseOperation(char* buffer,operation_t** operations,int cantOp,int precisio
     return EXIT_SUCCESS;
 }
 
-void printList(t_nodo* list)
+void printList(t_nodo* list,FILE* file)
 {
     do{
-        printf("%hi",list->val);
+        fprintf(file,"%hi",list->val);
         list=list->sig;
     }while (list != NULL);
 }
-void printListBackwards(t_nodo* list)
+void printListBackwards(t_nodo* list,FILE* file)
 {
     while (list->sig != NULL) /*recorre hasta el final*/
         list=list->sig;
     while (list != NULL)
     {
-        printf("%hi",list->val);
+        fprintf(file,"%hi",list->val);
         list=list->ant;
     }
 }
