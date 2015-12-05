@@ -324,9 +324,8 @@ result_state_t addition(operation_t* oper,int precision)
         (*oper).signAns = FALSE;
         return addNumbers(oper,precision);
     }
-    /*si no se restan*/
-    /*return substraction(oper,precision);*/
-    return ERR;
+    /*si no, se restan*/
+    return substraction(oper,precision);
 }
 int superior(operation_t* oper)
 {
