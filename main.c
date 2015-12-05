@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include "supercalc.h"
 #include "main.h"
 #include "simplecalc.h"
 #include "graphic.h"
-#include "supercalc.h"
 int main(int argc,char* argv[]) {
     /*--definicion de Variables--*/
     float ansFloat = 0;
@@ -18,7 +18,7 @@ int main(int argc,char* argv[]) {
     int count;
     arg.input=NULL;
     arg.output=NULL;
-    if (argc == 1) {
+    if (argc == 1) {    /* pocos parametros de entrada*/
         printf(MSG_ERROR_ARG);
         return EXIT_FAILURE;
     }
@@ -28,7 +28,7 @@ int main(int argc,char* argv[]) {
         /*Para agregar los nombres o rutas de archivos necesito modificar primero las funciones, para saber como transmitir*/
         /*la informacion*/
         if (strcmp(argv[count],"-p") == 0){
-            
+
             if (atoi(argv[count+1]) <= 0) {
                 printf(MSG_ERROR_ARG_PRESITION);
                 errorFlag = TRUE;
@@ -58,18 +58,18 @@ int main(int argc,char* argv[]) {
             }
             else strcpy (arg.input, argv[count+1]);
         }
-    };
+    }
     if (arg.calcType == NO_ASIGN){
         printf(MSG_ERROR_ARG);
         free (arg.output);
         free (arg.input);
         return EXIT_FAILURE;
-    };
+    }
     if (arg.calcType == SUPER_SEL){
         superCalc(arg.presition,arg.input, arg.output);
         free (arg.output);
         free (arg.input);
-    };
+    }
     if (arg.calcType == SIMPLE_SEL){
         printMenu();
         option = askOption();      /* Le pido la opcion al usuario */
@@ -105,7 +105,7 @@ int main(int argc,char* argv[]) {
             ansFloat = floatMenu(option, &errorFlag);
             if (errorFlag == TRUE) {     /* si hay error en las operaciones: Salir */
                 free (arg.output);
-                free (arg.input);    
+                free (arg.input);
                 return EXIT_FAILURE;
             }
             else {

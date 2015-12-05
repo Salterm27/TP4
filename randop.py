@@ -4,9 +4,9 @@ FILENAME = 'big.in'
 OUT = 'big.out'
 
 #Parametros a ajustar si quieren cambiarle la presicion y la cantidad de operaciones
-MAX_OPS = 200000
-MIN_PREC = 10
-MAX_PREC = 100
+MAX_OPS = 3
+MIN_PREC = 5
+MAX_PREC = 10
 
 OPS = ['+', '*', '-']
 

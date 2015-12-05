@@ -3,60 +3,107 @@
 #include <string.h>
 #include "supercalc.h"
 #include "main.h"
-
 /*----------SUPERCALC---------------*/
-void superCalc(int precision,char * input,char * output)
+void superCalc(int precision,char* input,char* output)
 {
-    /*VARIABLES*/
-    char* buffer=NULL;
-    operation_t** operations=NULL;
+    operation_t** operations;
     int cantOp=0,i,j;
-    /*BUFFER*/
-    buffer = (char*)malloc(sizeof(char)*((2*precision)+2)); /* Op1 + Op2 + Operacion + \0  buffer*/
+    FILE* fp=NULL;
+    char* buffer=(char*)calloc(precision*2+5,sizeof(char));
     if (buffer==NULL)
     {
         printf(MSG_ERROR_MEMORY);
     }
-    /*WHILE NOT TOLKEN*/
-    while (strcmp(CALCULATE_TOLKEN,gets(buffer)) != 0 && buffer != NULL) /*Mientras no escriba #Calculate*/
+    if (input != NULL)
     {
-        if (addOperation(&operations,&cantOp) == NULL) /*Agrego operacion y me fijo si hubo error de memoria*/
-            printf(MSG_ERROR_MEMORY);
-        else
-            if (buffer == NULL)     /*Si buffer es NULL*/
-                (*(operations[cantOp-1])).st = OFW; /* Hubo OverFlow ya que string > buffer*/
+        fp = fopen(input,"r");
+        while (strcmp(fgets(buffer,precision*2+5,fp),CALCULATE_TOLKEN) != 0) /*num1+num2+signos+op+\n*/
+        {
+            if (addOperation(&operations,&cantOp) == NULL)
+            {
+                printf(MSG_ERROR_MEMORY);
+            }
+            if (buffer == NULL)
+                (*(operations[cantOp-1])).st = OFW;
             else
-                parseOperation(buffer,operations,cantOp,precision); /* interpreto el buffer */
+                parseOperation(buffer,operations,cantOp,precision);
+        }
+        fclose(fp);
     }
-    free(buffer); /* Libero el buffer, no lo uso mas*/
+    else
+    {
+        while (strcmp(fgets(buffer,precision*2+5,stdin),CALCULATE_TOLKEN) != 0)
+        {
+            if (addOperation(&operations,&cantOp) == NULL)
+            {
+                printf(MSG_ERROR_MEMORY);
+            }
+            if (buffer == NULL)
+                (*(operations[cantOp-1])).st = OFW;
+            else
+                parseOperation(buffer,operations,cantOp,precision);
+        }
+    }
+    free(buffer);
     /*SOLVE OPERATIONS*/
     for(i=0;i<cantOp;i++)
     {
         solveOperation(operations[i],precision);
     }
     /*PRINT OPERATIONS ANSWERS*/
-    for(i=0;i<cantOp;i++)
+    if (output == NULL)
     {
-        if((*operations[i]).st == OFW)
-            printf(MSG_INFINITY);
-        else
+        for(i=0;i<cantOp;i++)
         {
-            if((*operations[i]).st == ERR)
-                printf(MSG_ERROR_MEMORY);
+            if((*operations[i]).st == OFW)
+                printf(MSG_INFINITY);
             else
             {
-                if((*operations[i]).signAns == TRUE)
+                if((*operations[i]).st == ERR)
+                    printf(MSG_ERROR_MEMORY);
+                else
                 {
-                    printf("-");
+                    if((*operations[i]).signAns == TRUE)
+                    {
+                        printf("-");
+                    }
+                    for(j=(*operations[i]).ans.numSize-1;j>=0;j--)
+                    {
+                        printf("%d",(*operations[i]).ans.num[j]);
+                    }
+                    printf("\n");
                 }
-                for(j=(*operations[i]).ans.numSize-1;j>=0;j--)
-                {
-                    printf("%d",(*operations[i]).ans.num[j]);
-                }
-                printf("\n");
             }
         }
     }
+    else
+    {
+        fp = fopen(output,"w");
+        for(i=0;i<cantOp;i++)
+        {
+            if((*operations[i]).st == OFW)
+                fprintf(fp,MSG_INFINITY);
+            else
+            {
+                if((*operations[i]).st == ERR)
+                    fprintf(fp,MSG_ERROR_MEMORY);
+                else
+                {
+                    if((*operations[i]).signAns == TRUE)
+                    {
+                        fprintf(fp,"-");
+                    }
+                    for(j=(*operations[i]).ans.numSize-1;j>=0;j--)
+                    {
+                        fprintf(fp,"%d",(*operations[i]).ans.num[j]);
+                    }
+                    fprintf(fp,"\n");
+                }
+            }
+        }
+        fclose(fp);
+    }
+
     /*FREE MEMORY*/
     for(i=0;i<cantOp;i++)
     {
@@ -146,7 +193,7 @@ int parseOperation(char* buffer,operation_t** operations,int cantOp,int precisio
     }
     /*MEMORIA PARA BUFFERNUM*/
     bufferNum=(short*)calloc(precision,sizeof(short));
-    if ((*(operations[cantOp-1])).num1.num == NULL)
+    if (bufferNum == NULL)
     {
         printf(MSG_ERROR_MEMORY);
         return EXIT_FAILURE;
@@ -194,7 +241,7 @@ int parseOperation(char* buffer,operation_t** operations,int cantOp,int precisio
         i++;
     }
     /*SEGUNDO NUMERO*/
-    for(j=0;i<strlen(buffer) ;j++)
+    for(j=0;i<strlen(buffer)-1 ;j++)
     {
         bufferNum[j] = buffer[i]-'0';
         ++(*(operations[cantOp-1])).num2.numSize;

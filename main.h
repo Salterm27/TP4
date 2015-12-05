@@ -105,5 +105,4 @@ typedef struct arg
     char *output;
 }t_arg;
 #endif
-
 #endif
