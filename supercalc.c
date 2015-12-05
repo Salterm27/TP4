@@ -329,3 +329,34 @@ result_state_t addition(operation_t* oper,int precision)
     /*return substraction(oper,precision);*/
     return ERR;
 }
+int superior(operation_t oper)
+{
+    int i=0,j=0,count;
+    t_nodo *listai, *listaj;
+    listai=(*oper).num1;
+    listaj=(*oper).num2;
+    while (listai->sig != NULL) { /*recorre hasta el final*/
+        listai=listai->sig;
+        i++
+    }
+    while (listaj->sig != NULL) { /*recorre hasta el final*/
+        listaj=listaj->sig;
+        j++
+    }
+    if (i < j)
+        return 2;
+    if (i > j)
+        return 1;
+    listai=(*oper).num1;
+    listaj=(*oper).num2;
+    while (listai != NULL){
+        if (listaj->val > listai->val)
+            return 2;
+        if (listaj->val < listai->val)
+            
+        istai=listai->sig;
+        listaj=listaj->sig;
+    }
+
+    return 0;
+}
