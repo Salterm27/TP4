@@ -9,8 +9,14 @@ int superCalc(int precision,char* input,char* output)
 
     operation_t** operations;
     int cantOp=0,i;
+    int bufferLength;
     FILE* fp=NULL;
-    char* buffer=(char*)calloc(precision*2+5,sizeof(char));
+    char* buffer;
+    if (precision<strlen(CALCULATE_TOLKEN))
+        bufferLength = strlen(CALCULATE_TOLKEN)+2; /* length + \0+\n*/
+    else
+        bufferLength = precision*2+5;
+    buffer=(char*)calloc(bufferLength,sizeof(char));
     if (buffer==NULL)
     {
         printf(MSG_ERROR_MEMORY);
@@ -19,7 +25,7 @@ int superCalc(int precision,char* input,char* output)
     if (input != NULL)
     {
         fp = fopen(input,"r");
-        while (strcmp(fgets(buffer,precision*2+5,fp),CALCULATE_TOLKEN) != 0) /*num1+num2+signos+op+\n*/
+        while (strncmp(fgets(buffer,bufferLength,fp),CALCULATE_TOLKEN,strlen(CALCULATE_TOLKEN)) != 0) /*num1+num2+signos+op+\n*/
         {
             if (addOperation(&operations,&cantOp) == NULL)
             {
@@ -34,7 +40,7 @@ int superCalc(int precision,char* input,char* output)
     }
     else
     {
-        while (strcmp(fgets(buffer,precision*2+5,stdin),CALCULATE_TOLKEN) != 0)
+        while (strncmp(fgets(buffer,bufferLength,stdin),CALCULATE_TOLKEN,strlen(CALCULATE_TOLKEN)) != 0)
         {
             if (addOperation(&operations,&cantOp) == NULL)
             {
