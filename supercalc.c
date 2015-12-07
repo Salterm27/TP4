@@ -75,6 +75,15 @@ int superCalc(int precision,char* input,char* output)
         printListBackwards((*(operations[i])).ans,fp);
         fprintf(fp,"\n");
     }
+    fclose(fp);
+    for(i=0;i<cantOp;i++)
+    {
+        freeList((*(operations[i])).num1);
+        freeList((*(operations[i])).num2);
+        freeList((*(operations[i])).ans);
+        free(operations[i]);
+    }
+    free(operations);
     return EXIT_SUCCESS;
 }
 /*------------ AGREGAR OPERACION--------------*/
