@@ -52,6 +52,7 @@ int superCalc(int precision,char* input,char* output)
                 parseOperation(buffer,operations,cantOp,precision);
         }
     }
+    free(buffer);
     /*SOLVE OPERATIONS*/
     for(i=0;i<cantOp;i++)
     {
