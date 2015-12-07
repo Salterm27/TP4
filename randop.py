@@ -5,10 +5,10 @@ OUT = 'big.out'
 
 #Parametros a ajustar si quieren cambiarle la presicion y la cantidad de operaciones
 MAX_OPS = 100
-MIN_PREC = 5
-MAX_PREC = 5
+MIN_PREC = 1
+MAX_PREC = 10
 
-OPS = ['+', '-', '*']
+OPS = ['+', '*', '-']
 
 def rand_int(n_digits):
 	n = random.randint(1, 10**n_digits - 1)
