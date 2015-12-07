@@ -71,10 +71,16 @@ int superCalc(int precision,char* input,char* output)
         fp = stdout;
     for(i=0;i<cantOp;i++)
     {
-        if ((*(operations[i])).signAns == TRUE)
-            fprintf(fp,"-");
-        printListBackwards((*(operations[i])).ans,fp);
-        fprintf(fp,"\n");
+        if ((*(operations[i])).st == OK) {
+            if ((*(operations[i])).signAns == TRUE)
+                fprintf(fp,"-");
+            printListBackwards((*(operations[i])).ans,fp);
+            fprintf(fp,"\n");
+        }
+        else if ((*(operations[i])).st == OFW)
+            fprintf(fp,MSG_INFINITY);
+        else if ((*(operations[i])).st == ERR)
+            fprintf(fp,MSG_ERROR_MEMORY);
     }
     fclose(fp);
     for(i=0;i<cantOp;i++)
@@ -479,15 +485,18 @@ result_state_t multiply(operation_t* oper,int precision) {
         lista2=lista2->sig;
         lista2Length++;
     }
-    if (lista1Length+lista2Length>precision)
+    if (lista1Length+lista2Length-1>precision)
         return OFW;
     bufferAns = (short*)calloc(precision,sizeof(short));
     if (bufferAns == NULL)
         return ERR;
     for (j=0; lista2!=NULL;j++,lista2=lista2->ant) /*RECORRO VECTOR 2*/
     {
+        lista1=(*oper).num1;
+        while (lista1->sig != NULL)  /*recorre hasta el final*/
+            lista1=lista1->sig;
         suma = 0;
-        for (i=0;lista1!=NULL;j++,lista1=lista1->ant)/*RECORRO VECTOR 1*/
+        for (i=0;lista1!=NULL;i++,lista1=lista1->ant)/*RECORRO VECTOR 1*/
         {
             suma = (lista1->val)*(lista2->val) + bufferAns[i+j] + suma/10;
             bufferAns[i+j] = suma%10;
@@ -508,7 +517,7 @@ result_state_t multiply(operation_t* oper,int precision) {
     while (ans->sig != NULL) { /*recorre hasta el final*/
         ans=ans->sig;
     }
-    while (ans->val == 0) { /*recorre hasta el final*/
+    while (ans->val == 0 && ans->ant !=NULL) {
         ans=ans->ant;
         free(ans->sig);
         ans->sig = NULL;
