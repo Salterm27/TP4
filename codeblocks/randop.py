@@ -4,19 +4,11 @@ FILENAME = 'big.in'
 OUT = 'big.out'
 
 #Parametros a ajustar si quieren cambiarle la presicion y la cantidad de operaciones
-<<<<<<< HEAD
 MAX_OPS = 100
 MIN_PREC = 1
 MAX_PREC = 10
 
 OPS = ['+', '*', '-']
-=======
-MAX_OPS = 50
-MIN_PREC = 2
-MAX_PREC = 4
-
-OPS = ['+', '-', '*']
->>>>>>> 609277b9735692bff1832121f0bcc4d3c0f04d1f
 
 def rand_int(n_digits):
 	n = random.randint(1, 10**n_digits - 1)
