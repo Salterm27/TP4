@@ -212,6 +212,11 @@ void printListBackwards(t_nodo* list,FILE* file)
         list=list->sig;
     while (list != NULL)
     {
+        while (list->val == 0){
+            list = list->ant;
+            free(list->sig);
+            list->sig = NULL;
+        }
         fprintf(file,"%hi",list->val);
         list=list->ant;
     }
@@ -526,5 +531,6 @@ result_state_t multiply(operation_t* oper,int precision) {
         ans->sig = NULL;
     }
     (*oper).ans = ans;
+    free(bufferAns);
     return OK;
 }
