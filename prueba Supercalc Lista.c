@@ -87,11 +87,11 @@ int addValue(t_nodo** listPointer,short value)
             printf(MSG_ERROR_MEMORY);
             return EXIT_FAILURE;
         }
-        list->ant = NULL; /*puede ser redundante*/
+        list->ant = NULL;
     }
     else
     {
-        while (list->sig != NULL) /*recorre hasta el final*/
+        while (list->sig != NULL)
             list=list->sig;
         list->sig =(t_nodo*)calloc(1,sizeof(t_nodo));
         if (list->sig == NULL)
@@ -102,9 +102,9 @@ int addValue(t_nodo** listPointer,short value)
         list->sig->ant = list;
         list=list->sig;
     }
-    list->sig = NULL; /*puede ser redundante*/
+    list->sig = NULL;
     list->val = value;
-    while (list->ant != NULL) /*recorre hasta el final*/
+    while (list->ant != NULL)
         list=list->ant;
     *listPointer = list;
     return EXIT_SUCCESS;
@@ -119,7 +119,7 @@ void printList(t_nodo* list)
 }
 void printListBackwards(t_nodo* list)
 {
-    while (list->sig != NULL) /*recorre hasta el final*/
+    while (list->sig != NULL)
         list=list->sig;
     while (list != NULL)
     {
@@ -132,11 +132,11 @@ void freeList(t_nodo* list)
 {
     if (list!=NULL)
     {
-        while(list->sig != NULL) /*recorre hasta el final*/
+        while(list->sig != NULL)
         {
             list=list->sig;
         }
-        while(list->ant != NULL) /*recorre hasta el principio y libera*/
+        while(list->ant != NULL)
         {
             list = list->ant;
             free(list->sig);
@@ -164,8 +164,10 @@ void supercalc(int precision,char* input,char* output)
             {
                 printf(MSG_ERROR_MEMORY);
             }
-            (*(operations[cantOp-1])).st = OFW;
-            parseOperation(buffer,operations,cantOp,precision);
+            if (buffer == NULL)
+                (*(operations[cantOp-1])).st = OFW;
+            else
+                parseOperation(buffer,operations,cantOp,precision);
         }
         fclose(fp);
     }
@@ -177,12 +179,14 @@ void supercalc(int precision,char* input,char* output)
             {
                 printf(MSG_ERROR_MEMORY);
             }
-            (*(operations[cantOp-1])).st = OFW;
-            parseOperation(buffer,operations,cantOp,precision);
+            if (buffer == NULL)
+                (*(operations[cantOp-1])).st = OFW;
+            else
+                parseOperation(buffer,operations,cantOp,precision);
         }
     }
     free(buffer);
-
+}
 /*SOLVE OPERATIONS*/
     for(i=0;i<cantOp;i++)
     {
