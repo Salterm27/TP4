@@ -281,7 +281,7 @@ void solveOperation(operation_t* oper,int precision)
         {
             /*SIGNO*/
             (*oper).signAns = (*oper).sign2 ^ (*oper).sign1;
-            /*(*oper).st = multiply(oper,precision);*/
+            (*oper).st = multiply(oper,precision);
             break;
         }
         default:
@@ -357,7 +357,7 @@ result_state_t addition(operation_t* oper,int precision)
 }
 int superior(operation_t* oper)
 {
-    int i=0,j=0;
+    int i=1,j=1;
     t_nodo *listai, *listaj;
     listai=(*oper).num1;
     listaj=(*oper).num2;
@@ -463,4 +463,56 @@ result_state_t substraction(operation_t* oper,int precision)
             return OK;
         }
     }
+}
+result_state_t multiply(operation_t* oper,int precision) {
+    int suma,i,j;
+    int lista1Length=1,lista2Length=1;
+    short* bufferAns=NULL;
+    t_nodo *lista1, *lista2, *ans=NULL;
+    lista1=(*oper).num1;
+    lista2=(*oper).num2;
+    while (lista1->sig != NULL) { /*recorre hasta el final*/
+        lista1=lista1->sig;
+        lista1Length++;
+    }
+    while (lista2->sig != NULL) { /*recorre hasta el final*/
+        lista2=lista2->sig;
+        lista2Length++;
+    }
+    if (lista1Length+lista2Length>precision)
+        return OFW;
+    bufferAns = (short*)calloc(precision,sizeof(short));
+    if (bufferAns == NULL)
+        return ERR;
+    for (j=0; lista2!=NULL;j++,lista2=lista2->ant) /*RECORRO VECTOR 2*/
+    {
+        suma = 0;
+        for (i=0;lista1!=NULL;j++,lista1=lista1->ant)/*RECORRO VECTOR 1*/
+        {
+            suma = (lista1->val)*(lista2->val) + bufferAns[i+j] + suma/10;
+            bufferAns[i+j] = suma%10;
+        }
+        if (lista2->ant != NULL)
+            bufferAns [j+i] = suma/10;
+    }
+    if (suma/10)
+    {
+        if (lista1Length+lista2Length-1 < precision)
+            bufferAns[lista1Length+lista2Length -1] = suma/10;
+        else
+            return OFW;
+    }
+    for(i=0;i<precision;i++){
+        addValue(&ans,bufferAns[i]);
+    }
+    while (ans->sig != NULL) { /*recorre hasta el final*/
+        ans=ans->sig;
+    }
+    while (ans->val == 0) { /*recorre hasta el final*/
+        ans=ans->ant;
+        free(ans->sig);
+        ans->sig = NULL;
+    }
+    (*oper).ans = ans;
+    return OK;
 }

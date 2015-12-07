@@ -25,7 +25,7 @@ int askOption(void)
 void printAnsLong(long unsigned ans)
 {
     printf(MSG_ANS);
-    printf("%u\n", ans);      /* RESPUESTA = LONG*/
+    printf("%lu\n", ans);      /* RESPUESTA = LONG*/
 }
 /*------------------------------------------*/
 void printAnsFloat(float ans)
