@@ -523,5 +523,6 @@ result_state_t multiply(operation_t* oper,int precision) {
         ans->sig = NULL;
     }
     (*oper).ans = ans;
+    free(bufferAns);
     return OK;
 }
