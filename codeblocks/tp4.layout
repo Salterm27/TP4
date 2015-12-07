@@ -13,7 +13,11 @@
 	</File>
 	<File name="supercalc.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
+<<<<<<< HEAD
 			<Cursor1 position="1469" topLine="0" />
+=======
+			<Cursor1 position="541" topLine="11" />
+>>>>>>> 609277b9735692bff1832121f0bcc4d3c0f04d1f
 		</Cursor>
 	</File>
 	<File name="main.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
