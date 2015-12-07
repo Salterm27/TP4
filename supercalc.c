@@ -12,11 +12,12 @@ int superCalc(int precision,char* input,char* output)
     int bufferLength;
     FILE* fp=NULL;
     char* buffer;
-    if (precision<strlen(CALCULATE_TOLKEN))
+    if (precision*2+5<strlen(CALCULATE_TOLKEN))
         bufferLength = strlen(CALCULATE_TOLKEN)+2; /* length + \0+\n*/
     else
         bufferLength = precision*2+5;
     buffer=(char*)calloc(bufferLength,sizeof(char));
+
     if (buffer==NULL)
     {
         printf(MSG_ERROR_MEMORY);
@@ -211,6 +212,11 @@ void printListBackwards(t_nodo* list,FILE* file)
         list=list->sig;
     while (list != NULL)
     {
+        while (list->val == 0){
+            list = list->ant;
+            free(list->sig);
+            list->sig = NULL;
+        }
         fprintf(file,"%hi",list->val);
         list=list->ant;
     }
@@ -334,6 +340,7 @@ result_state_t addNumbers(operation_t* oper,int precision)
     if (carry != 0)
         addValue(&ans,carry);
     (*oper).ans = ans;
+    i=0;
     while (ans != NULL) { /*recorre hasta el final*/
         i++;
         ans=ans->sig;
@@ -435,6 +442,7 @@ result_state_t subNumbers(operation_t* oper,int precision)
             return ERR;
     }
     (*oper).ans = ans;
+    i=0;
     while (ans != NULL) { /*recorre hasta el final*/
         i++;
         ans=ans->sig;
@@ -523,5 +531,6 @@ result_state_t multiply(operation_t* oper,int precision) {
         ans->sig = NULL;
     }
     (*oper).ans = ans;
+    free(bufferAns);
     return OK;
 }
