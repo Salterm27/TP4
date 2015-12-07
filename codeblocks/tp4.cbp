@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="superCalc -p 5 -i big.in -o tp4.out" />
+				<Option parameters="superCalc -p 5 -i big.in -o tp4-2.out" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>

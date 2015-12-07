@@ -12,11 +12,12 @@ int superCalc(int precision,char* input,char* output)
     int bufferLength;
     FILE* fp=NULL;
     char* buffer;
-    if (precision<strlen(CALCULATE_TOLKEN))
+    if (precision*2+5<strlen(CALCULATE_TOLKEN))
         bufferLength = strlen(CALCULATE_TOLKEN)+2; /* length + \0+\n*/
     else
         bufferLength = precision*2+5;
     buffer=(char*)calloc(bufferLength,sizeof(char));
+
     if (buffer==NULL)
     {
         printf(MSG_ERROR_MEMORY);
