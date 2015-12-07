@@ -45,14 +45,14 @@ int main(int argc,char* argv[]) {
             printf(MSG_ERROR_INPUT);
         }
         if (strcmp(argv[count],"-o") == 0){
-            arg.output = (char*)malloc(sizeof(char)*strlen(argv[count+1]));
+            arg.output = (char*)malloc (sizeof(char)*(strlen(argv[count+1])+1));
             if (arg.output==NULL){
                 printf(MSG_ERROR_MEMORY);
             }
             else strcpy (arg.output, argv[count+1]);
         }
         if (strcmp(argv[count],"-i") == 0){
-            arg.input = (char*)malloc(sizeof(char)*strlen(argv[count+1]));
+            arg.input = (char*)malloc (sizeof(char)*(strlen(argv[count+1])+1));
             if (arg.input==NULL){
                 printf(MSG_ERROR_MEMORY);
             }
@@ -67,8 +67,8 @@ int main(int argc,char* argv[]) {
     }
     if (arg.calcType == SUPER_SEL){
         superCalc(arg.presition,arg.input, arg.output);
-        free(arg.output);
-        free(arg.input);
+        free (arg.output);
+        free (arg.input);
     }
     if (arg.calcType == SIMPLE_SEL){
         printMenu();

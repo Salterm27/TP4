@@ -96,7 +96,7 @@ operation_t** addOperation(operation_t*** operations,int* cantOp)
     /*MEMORIA PARA UNA EL PUNTERO DE UNA OPERACION*/
     if (*cantOp == 0) /*si nunca crearon la memoria*/
     {
-        aux = (operation_t**)malloc(sizeof(operation_t*)); /* Creo memoria*/
+        aux = (operation_t**)calloc(1,sizeof(operation_t*)); /* Creo memoria*/
         if (aux == NULL)        /* Si Hubo error de memoria*/
         {
             printf(MSG_ERROR_MEMORY);
@@ -120,10 +120,11 @@ operation_t** addOperation(operation_t*** operations,int* cantOp)
         {
             *operations = aux;       /*guardar la memoria*/
             (*cantOp)++;               /*sumar una operacion*/
+            
         }
     }
     /*MEMORIA PARA UNA OPERACION*/
-    aux2 = (operation_t*)malloc(sizeof(operation_t));  /*agrego una operacion y la guardo en la memoria expandida*/
+    aux2 = (operation_t*)calloc(1,sizeof(operation_t));  /*agrego una operacion y la guardo en la memoria expandida*/
     if (aux2 == NULL)
     {
         printf(MSG_ERROR_MEMORY);
