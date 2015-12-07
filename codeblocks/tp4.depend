@@ -97,35 +97,19 @@
 	"supercalc.h"
 	"main.h"
 
-<<<<<<< HEAD
+1449520197 D
+
 1449522804 source:/home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/graphic.c
-=======
+
 1448727847 source:c:\users\leapepe\documents\github\tp4\codeblocks\graphic.c
->>>>>>> 609277b9735692bff1832121f0bcc4d3c0f04d1f
+
+1449523843 277b9735692bff1832121f0bcc4d3c0f04d1f
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	"graphic.h"
 	"main.h"
 	"simplecalc.h"
-
-<<<<<<< HEAD
-1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/graphic.h
-
-1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/main.h
-
-1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/simplecalc.h
-
-1449522804 source:/home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/main.c
-=======
-1448727847 c:\users\leapepe\documents\github\tp4\codeblocks\graphic.h
-
-1449240004 c:\users\leapepe\documents\github\tp4\codeblocks\main.h
-
-1448713450 c:\users\leapepe\documents\github\tp4\codeblocks\simplecalc.h
-
-1449518416 source:c:\users\leapepe\documents\github\tp4\codeblocks\main.c
->>>>>>> 609277b9735692bff1832121f0bcc4d3c0f04d1f
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -134,42 +118,57 @@
 	"main.h"
 	"simplecalc.h"
 	"graphic.h"
-
-<<<<<<< HEAD
-1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/supercalc.h
-
-1449522804 source:/home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/numeric.c
-=======
-1449354402 c:\users\leapepe\documents\github\tp4\codeblocks\supercalc.h
-
-1448713450 source:c:\users\leapepe\documents\github\tp4\codeblocks\numeric.c
->>>>>>> 609277b9735692bff1832121f0bcc4d3c0f04d1f
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	"numeric.h"
 	"main.h"
-
-<<<<<<< HEAD
-1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/numeric.h
-
-1449522804 source:/home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/simplecalc.c
-=======
-1448713450 c:\users\leapepe\documents\github\tp4\codeblocks\numeric.h
-
-1449520197 source:c:\users\leapepe\documents\github\tp4\codeblocks\simplecalc.c
->>>>>>> 609277b9735692bff1832121f0bcc4d3c0f04d1f
 	<stdio.h>
 	<stdlib.h>
 	"simplecalc.h"
 	"main.h"
 	"numeric.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"supercalc.h"
+	"main.h"
 
-<<<<<<< HEAD
+1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/graphic.h
+
+1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/main.h
+
+1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/simplecalc.h
+
+1449522804 source:/home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/main.c
+
+1448727847 c:\users\leapepe\documents\github\tp4\codeblocks\graphic.h
+
+1449240004 c:\users\leapepe\documents\github\tp4\codeblocks\main.h
+
+1448713450 c:\users\leapepe\documents\github\tp4\codeblocks\simplecalc.h
+
+1449518416 source:c:\users\leapepe\documents\github\tp4\codeblocks\main.c
+
+1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/supercalc.h
+
+1449522804 source:/home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/numeric.c
+
+1449354402 c:\users\leapepe\documents\github\tp4\codeblocks\supercalc.h
+
+1448713450 source:c:\users\leapepe\documents\github\tp4\codeblocks\numeric.c
+
+1449522804 /home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/numeric.h
+
+1449522804 source:/home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/simplecalc.c
+
+1448713450 c:\users\leapepe\documents\github\tp4\codeblocks\numeric.h
+
+1449520197 source:c:\users\leapepe\documents\github\tp4\codeblocks\simplecalc.c
+
 1449522804 source:/home/seba/Documentos/FIUBA/Algo I/TPs/TP4/codeblocks/supercalc.c
-=======
-1449523843 source:c:\users\leapepe\documents\github\tp4\codeblocks\supercalc.c
->>>>>>> 609277b9735692bff1832121f0bcc4d3c0f04d1f
+
+1449527113 source:c:\users\leapepe\documents\github\tp4\codeblocks\supercalc.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

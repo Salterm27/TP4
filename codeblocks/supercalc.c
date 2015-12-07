@@ -335,6 +335,7 @@ result_state_t addNumbers(operation_t* oper,int precision)
     if (carry != 0)
         addValue(&ans,carry);
     (*oper).ans = ans;
+    i=0;
     while (ans != NULL) { /*recorre hasta el final*/
         i++;
         ans=ans->sig;
@@ -436,6 +437,7 @@ result_state_t subNumbers(operation_t* oper,int precision)
             return ERR;
     }
     (*oper).ans = ans;
+    i=0;
     while (ans != NULL) { /*recorre hasta el final*/
         i++;
         ans=ans->sig;
