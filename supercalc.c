@@ -120,7 +120,7 @@ operation_t** addOperation(operation_t*** operations,int* cantOp)
         {
             *operations = aux;       /*guardar la memoria*/
             (*cantOp)++;               /*sumar una operacion*/
-            
+
         }
     }
     /*MEMORIA PARA UNA OPERACION*/
