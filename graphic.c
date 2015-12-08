@@ -193,7 +193,7 @@ t_func SolveFunction(t_graph_opt opt,bool_t* errorFlagPointer)
     return funcion;
 }
 /*------------------------------------------*/
-void functionToGraph(t_func funcion,bool_t* errorFlagPointer,char output [FILE_NAME_MAX])
+void functionToGraph(t_func funcion,bool_t* errorFlagPointer,char* output)
 {
 
     int x,y,i;
@@ -236,40 +236,26 @@ void functionToGraph(t_func funcion,bool_t* errorFlagPointer,char output [FILE_N
     return;
 }
 /*------------------------------------------*/
-void printMatrizPMB(bool_t mat[Y_LENGTH_PIXELS][X_LENGTH_PIXELS], char output [FILE_NAME_MAX])
+void printMatrizPMB(bool_t mat[Y_LENGTH_PIXELS][X_LENGTH_PIXELS], char* output)
 {
     int x,y;
     FILE *fp = NULL;
-    fp = fopen (output,"w");
-    if (output[0]!=0){
-        fprintf(fp,"P1");       /* Header */
-        fprintf(fp,"\n");
-        fprintf(fp,"%d %d",Y_LENGTH_PIXELS,X_LENGTH_PIXELS); /* dimensiones de la matriz */
-        fprintf(fp,"\n");
-        for (y=0;y<Y_LENGTH_PIXELS;y++)
+    if (output == NULL)
+        fp=stderr;
+    else
+        fp = fopen (output,"w");
+    printf(MSG_PRINT_IN_PROGRESS);
+    fprintf(fp,"P1");       /* Header */
+    fprintf(fp,"\n");
+    fprintf(fp,"%d %d",Y_LENGTH_PIXELS,X_LENGTH_PIXELS); /* dimensiones de la matriz */
+    fprintf(fp,"\n");
+    for (y=0;y<Y_LENGTH_PIXELS;y++)
+    {
+        for (x=0;x<X_LENGTH_PIXELS;x++)
         {
-            for (x=0;x<X_LENGTH_PIXELS;x++)
-            {
-                fprintf(fp,"%d ",mat[y][x]);
-            }
-        fprintf(fp,"\n");
+            fprintf(fp,"%d ",mat[y][x]);
         }
-        return;
-    }
-    else {
-        fprintf(stderr,"P1");       /* Header */
-        fprintf(stderr,"\n");
-        fprintf(stderr,"%d %d",Y_LENGTH_PIXELS,X_LENGTH_PIXELS); /* dimensiones de la matriz */
-        fprintf(stderr,"\n");
-        for (y=0;y<Y_LENGTH_PIXELS;y++)
-        {
-            for (x=0;x<X_LENGTH_PIXELS;x++)
-            {
-            fprintf(stderr,"%d ",mat[y][x]);
-            }
-        fprintf(stderr,"\n");
-        }
-        return;
+    fprintf(fp,"\n");
     }
 }
 /*------------------------------------------*/

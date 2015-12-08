@@ -6,62 +6,26 @@
 /*----------SUPERCALC---------------*/
 int superCalc(int precision,char* input,char* output)
 {
-
+    /* Definicion de variables*/
     operation_t** operations;
     int cantOp=0,i;
     int bufferLength;
     FILE* fp=NULL;
-    char* buffer;
-    if (precision*2+5<strlen(CALCULATE_TOLKEN))
-        bufferLength = strlen(CALCULATE_TOLKEN)+2; /* length + \0+\n*/
-    else
-        bufferLength = precision*2+5;
-    buffer=(char*)calloc(bufferLength,sizeof(char));
+    char* buffer=NULL;
 
-    if (buffer==NULL)
+    if (precision*2+5<strlen(CALCULATE_TOLKEN)) /*precision minima = #calculate*/
+        bufferLength = strlen(CALCULATE_TOLKEN)+2; /* length+\n+\0 */
+    else
+        bufferLength = precision*2+5; /*maximo num1+num2+op+sign1+sign2+\n+\0*/
+    buffer=(char*)calloc(bufferLength,sizeof(char)); /*defino el buffer */
+    if (buffer==NULL) /*error de malloc*/
     {
         printf(MSG_ERROR_MEMORY);
         return EXIT_FAILURE;
     }
-    if (input != NULL)
+    if (input != NULL) /* Si no hay input, fp es stdin, si no fp es el archivo*/
     {
         fp = fopen(input,"r");
-        while (strncmp(fgets(buffer,bufferLength,fp),CALCULATE_TOLKEN,strlen(CALCULATE_TOLKEN)) != 0) /*num1+num2+signos+op+\n*/
-        {
-            if (addOperation(&operations,&cantOp) == NULL)
-            {
-                printf(MSG_ERROR_MEMORY);
-            }
-            if (buffer == NULL)
-                (*(operations[cantOp-1])).st = OFW;
-            else
-                parseOperation(buffer,operations,cantOp,precision);
-        }
-        fclose(fp);
-    }
-    else
-    {
-        while (strncmp(fgets(buffer,bufferLength,stdin),CALCULATE_TOLKEN,strlen(CALCULATE_TOLKEN)) != 0)
-        {
-            if (addOperation(&operations,&cantOp) == NULL)
-            {
-                printf(MSG_ERROR_MEMORY);
-            }
-            if (buffer == NULL)
-                (*(operations[cantOp-1])).st = OFW;
-            else
-                parseOperation(buffer,operations,cantOp,precision);
-        }
-    }
-    free(buffer);
-    /*SOLVE OPERATIONS*/
-    for(i=0;i<cantOp;i++)
-    {
-        solveOperation(operations[i],precision);
-    }
-    if(output != NULL)
-    {
-        fp = fopen(output,"w");
         if (fp == NULL)
         {
             printf(MSG_ERROR_ARG);
@@ -69,8 +33,38 @@ int superCalc(int precision,char* input,char* output)
         }
     }
     else
+        fp = stdin;
+    while (strncmp(fgets(buffer,bufferLength,fp),CALCULATE_TOLKEN,strlen(CALCULATE_TOLKEN)) != 0){
+    /*mientras fgets sea distinto a #calculate*/
+        if (addOperation(&operations,&cantOp) == NULL) /* si addoperations = NULL, hubo error de memoria*/
+        {
+            printf(MSG_ERROR_MEMORY);
+        }
+        if (buffer == NULL) /*si el buffer es null, es porque ingresaron linea mayor al permitido -> OFW*/
+            (*(operations[cantOp-1])).st = OFW;
+        else
+            parseOperation(buffer,operations,cantOp,precision); /* interpreto el buffer y lo guardo en estructura*/
+    }
+    if (fp != stdin)
+        fclose(fp);
+    free(buffer);
+    /*SOLVE OPERATIONS*/
+    for(i=0;i<cantOp;i++) /* resuelvo las operaciones 1x1*/
+    {
+        solveOperation(operations[i],precision);
+    }
+    if(output != NULL) /* si hay output, fp es el archivo, si no, fp es stdin*/
+    {
+        fp = fopen(output,"w");
+        if (fp == NULL) /* error de archivo */
+        {
+            printf(MSG_ERROR_ARG);
+            return EXIT_FAILURE;
+        }
+    }
+    else
         fp = stdout;
-    for(i=0;i<cantOp;i++)
+    for(i=0;i<cantOp;i++) /* imprimo las operaciones en fp */
     {
         if ((*(operations[i])).st == OK) {
             if ((*(operations[i])).signAns == TRUE)
@@ -83,15 +77,16 @@ int superCalc(int precision,char* input,char* output)
         else if ((*(operations[i])).st == ERR)
             fprintf(fp,MSG_ERROR_MEMORY);
     }
-    fclose(fp);
-    for(i=0;i<cantOp;i++)
+    if (fp != stdout) /*cierro archivo */
+        fclose(fp);
+    for(i=0;i<cantOp;i++) /* libero las listas */
     {
         freeList((*(operations[i])).num1);
         freeList((*(operations[i])).num2);
         freeList((*(operations[i])).ans);
-        free(operations[i]);
+        free(operations[i]); /* libero la estructura*/
     }
-    free(operations);
+    free(operations); /* libero el vector de estructuras */
     return EXIT_SUCCESS;
 }
 /*------------ AGREGAR OPERACION--------------*/
@@ -132,7 +127,7 @@ operation_t** addOperation(operation_t*** operations,int* cantOp)
     }
     /*MEMORIA PARA UNA OPERACION*/
     aux2 = (operation_t*)calloc(1,sizeof(operation_t));  /*agrego una operacion y la guardo en la memoria expandida*/
-    if (aux2 == NULL)
+    if (aux2 == NULL) /* error de memoria*/
     {
         printf(MSG_ERROR_MEMORY);
         return NULL;
@@ -155,25 +150,25 @@ int parseOperation(char* buffer,operation_t** operations,int cantOp,int precisio
     (*(operations[cantOp-1])).sign2 = FALSE;
     (*(operations[cantOp-1])).signAns = FALSE;
     /*SIGNO PRIMER NUMERO*/
-    if (buffer[i] == '-')
+    if (buffer[i] == SUB)
     {
         (*(operations[cantOp-1])).sign1 = TRUE;
         i++;
     }
     /*PRIMER NUMERO*/
-    for(j=0;buffer[i] !='+' && buffer[i] !='-' && buffer[i] !='*';j++)
+    for(j=0;buffer[i] !=ADD && buffer[i] !=SUB && buffer[i] !=MUX;j++) /* hasta que aparezca operacion */
     {
-        addValue(&(*(operations[cantOp-1])).num1, buffer[i++]-'0');
+        addValue(&(*(operations[cantOp-1])).num1, buffer[i++]-ZERO_CHAR); /* agrego a la lista1 */
     }
     /*OPERACION*/
     switch(buffer[i])
     {
-        case '+':
+        case ADD:
         {
             (*(operations[cantOp-1])).op = ADD;
             break;
         }
-        case '-':
+        case SUB:
         {
             (*(operations[cantOp-1])).op = SUB;
             break;
@@ -186,45 +181,53 @@ int parseOperation(char* buffer,operation_t** operations,int cantOp,int precisio
     }
     i++;
     /*SIGNO SEGUNDO NUMERO*/
-    if (buffer[i] == '-')
+    if (buffer[i] == SUB)
     {
         (*(operations[cantOp-1])).sign2 = TRUE;
         i++;
     }
     /*SEGUNDO NUMERO*/
-    for(j=0;i<strlen(buffer)-1 ;j++)
+    for(j=0;i<strlen(buffer)-1 ;j++) /* hasta el final menos /n*/
     {
-        addValue(&(*(operations[cantOp-1])).num2, buffer[i++]-'0');
+        addValue(&(*(operations[cantOp-1])).num2, buffer[i++]-ZERO_CHAR); /* agrego a lista2*/
     }
     return EXIT_SUCCESS;
 }
-
+/*----------IMPRIMIR LISTA-------------*/
 void printList(t_nodo* list,FILE* file)
 {
-    do{
-        fprintf(file,"%hi",list->val);
-        list=list->sig;
-    }while (list != NULL);
+    if (list == NULL)
+        fprintf(file,"0"); /* imprimo valor */
+    else
+        do{
+            fprintf(file,"%hi",list->val); /* imprimo valor */
+            list=list->sig;   /* voy al siguiente */
+        }while (list != NULL); /* hasta que llegue al final*/
 }
+/*----------IMPRIMIR LISTA AL REVES-------------*/
 void printListBackwards(t_nodo* list,FILE* file)
 {
-    while (list->sig != NULL) /*recorre hasta el final*/
-        list=list->sig;
-    while (list != NULL)
-    {
-        while (list->val == 0){
-            list = list->ant;
-            free(list->sig);
-            list->sig = NULL;
+    if (list == NULL)
+        fprintf(file,"00"); /* imprimo valor */
+    else{
+        while (list->sig != NULL) /*recorre hasta el final*/
+            list=list->sig; /*voy al siguiente */
+        while (list != NULL) /* hasta el principio */
+        {
+            while (list->val == 0 && list->ant != NULL){ /*mientras el valor sea 0, no imprimo nada, cero a la izquiera */
+                list = list->ant;   /* voy al anterior*/
+                free(list->sig);    /* libero el siguiente */
+                list->sig = NULL; /*siguiente a null*/
+            }
+            fprintf(file,"%hi",list->val); /* imprimo valor */
+            list=list->ant; /*voy al anterior */
         }
-        fprintf(file,"%hi",list->val);
-        list=list->ant;
     }
 }
-
+/*----------LIBERAR LISTA-------------*/
 void freeList(t_nodo* list)
 {
-    if (list!=NULL)
+    if (list!=NULL) /* hasta el final */
     {
         while(list->sig != NULL) /*recorre hasta el final*/
         {
@@ -232,41 +235,41 @@ void freeList(t_nodo* list)
         }
         while(list->ant != NULL) /*recorre hasta el principio y libera*/
         {
-            list = list->ant;
-            free(list->sig);
+            list = list->ant; /* voy al anterior*/
+            free(list->sig);    /* libero el siguiente*/
         }
-        free(list);
+        free(list); /* libero el ultimo*/
     }
 }
-
+/*----------AGREGAR VALOR A LISTA-------------*/
 int addValue(t_nodo** listPointer,short value)
 {
     t_nodo* list;
     list = *listPointer;
     if (list == NULL) /* Lista creada?*/
     {
-        list = (t_nodo*)calloc(1,sizeof(t_nodo));
+        list = (t_nodo*)calloc(1,sizeof(t_nodo)); /* alojo memoria */
         if (list == NULL)
         {
             printf(MSG_ERROR_MEMORY);
             return EXIT_FAILURE;
         }
-        list->ant = NULL; /*puede ser redundante*/
+        list->ant = NULL; /*puede ser redundante, por seguridad lo dejamos*/
     }
     else
     {
         while (list->sig != NULL) /*recorre hasta el final*/
             list=list->sig;
         list->sig =(t_nodo*)calloc(1,sizeof(t_nodo));
-        if (list->sig == NULL)
+        if (list->sig == NULL) /* si el siguiente es null, no se alojo memoria*/
         {
             printf(MSG_ERROR_MEMORY);
             return EXIT_FAILURE;
         }
-        list->sig->ant = list;
-        list=list->sig;
+        list->sig->ant = list; /* el anterior es donde estaba parado */
+        list=list->sig; /* me muevo al siguiente */
     }
-    list->sig = NULL; /*puede ser redundante*/
+    list->sig = NULL; /*puede ser redundante, por seguridad lo dejamos*/
     list->val = value;
     while (list->ant != NULL) /*recorre hasta el final*/
         list=list->ant;
@@ -279,11 +282,11 @@ void solveOperation(operation_t* oper,int precision)
     switch ((*oper).op)
     {
         case SUB:
-        {/*cambio el signo de la segunda operacion*/
-            if ((*oper).sign2==TRUE)
+        {
+            if ((*oper).sign2==TRUE) /*cambio el signo de la segunda operacion*/
                 (*oper).sign2 = FALSE;
             else (*oper).sign2 = TRUE;
-        }
+        }   /* voy a ADD */
         case ADD:
         {
             (*oper).st = addition(oper,precision);
@@ -305,21 +308,23 @@ void solveOperation(operation_t* oper,int precision)
 }
 result_state_t addNumbers(operation_t* oper,int precision)
 {
+    /*Variables*/
     int i,carry=0, resultado;
     t_nodo *lista1, *lista2, *ans=NULL;
+    /*defino puntero a listas para no modificar el puntero original */
     lista1=(*oper).num1;
     lista2=(*oper).num2;
     while (lista1->sig != NULL) /*recorre hasta el final*/
         lista1=lista1->sig;
     while (lista2->sig != NULL) /*recorre hasta el final*/
         lista2=lista2->sig;
-    while (lista1 != NULL || lista2 != NULL)
+    while (lista1 != NULL || lista2 != NULL) /* Mientras alguno de los 2 sea distinto de NULL */
     {
-        if (lista1 == NULL){
+        if (lista1 == NULL){ /* se termino el primer numero */
             resultado = lista2->val+carry;
             lista2=lista2->ant;
         }
-        else if (lista2==NULL){
+        else if (lista2==NULL){ /* se termino el segundo numero */
             resultado = lista1->val+carry;
             lista1=lista1->ant;
         }
@@ -328,7 +333,7 @@ result_state_t addNumbers(operation_t* oper,int precision)
             lista2=lista2->ant;
             lista1=lista1->ant;
         }
-        if (resultado > 9) {
+        if (resultado > 9) { /* carry */
             carry = resultado / 10;
             resultado = resultado % 10;
         }
@@ -345,7 +350,7 @@ result_state_t addNumbers(operation_t* oper,int precision)
         i++;
         ans=ans->sig;
     }
-    if (i>precision)
+    if (i>precision) /* condicion de overflow */
         return OFW;
     return OK;
 }
@@ -403,6 +408,7 @@ result_state_t subNumbers(operation_t* oper,int precision)
 {
     int i,borrow=0,resultado;
     t_nodo *lista1, *lista2, *ans=NULL;
+    /* defino como lista1 al mas grande y 2 al mas chico*/
     if (superior(oper) == 2)
     {
         lista1=(*oper).num2;
@@ -417,13 +423,13 @@ result_state_t subNumbers(operation_t* oper,int precision)
     while (lista2->sig != NULL) /*recorre hasta el final*/
         lista2=lista2->sig;
 
-    while (lista1 != NULL || lista2 != NULL)
+    while (lista1 != NULL || lista2 != NULL) /*mientras alguno de los 2 sea distinto de null*/
     {
-        if (lista1 == NULL){
+        if (lista1 == NULL){ /* si se acabo lista1 */
             resultado = lista2->val - lista2->val - lista2->val - borrow;
             lista2=lista2->ant;
         }
-        else if (lista2==NULL){
+        else if (lista2==NULL){ /* si se acabo lista2 */
             resultado = lista1->val-borrow;
             lista1=lista1->ant;
         }
@@ -432,7 +438,7 @@ result_state_t subNumbers(operation_t* oper,int precision)
             lista2=lista2->ant;
             lista1=lista1->ant;
         }
-        if (resultado < 0) {
+        if (resultado < 0) { /* borrow */
             borrow = 1;
             resultado += 10;
         }
@@ -447,7 +453,7 @@ result_state_t subNumbers(operation_t* oper,int precision)
         i++;
         ans=ans->sig;
     }
-    if (i>precision)
+    if (i>precision) /*condicion de overflow*/
         return OFW;
     return OK;
 }
@@ -458,6 +464,7 @@ result_state_t substraction(operation_t* oper,int precision)
     (*oper).signAns = FALSE; /*asumo resultado positivo*/
     switch (superior(oper))
     {
+        /*defino los signos*/
         case 1: /* num1 > num2*/
         {
             if ((*oper).sign1 == TRUE)
@@ -493,7 +500,7 @@ result_state_t multiply(operation_t* oper,int precision) {
         lista2=lista2->sig;
         lista2Length++;
     }
-    if (lista1Length+lista2Length-1>precision)
+    if (lista1Length+lista2Length-1>precision) /* una condicion de overflow */
         return OFW;
     bufferAns = (short*)calloc(precision,sizeof(short));
     if (bufferAns == NULL)

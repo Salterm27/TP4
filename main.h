@@ -49,6 +49,13 @@
 #define FILE_NAME_MAX 50 /*es la longitud maxima del nombre del archivo*/
 #endif
 
+/*--Tolkens de entrada--*/
+#define INPUT_TOLKEN "-i"
+#define OUTPUT_TOLKEN "-o"
+#define PRESITION_TOLKEN "-p"
+#define SUPERCALC_STRING "superCalc"
+#define SIMPLECALC_STRING "simpleCalc"
+
 #ifndef __OPTION_T__
 #define __OPTION_T__
 typedef enum{OPT_ADD=1,OPT_SUB=2,OPT_DIV=3,OPT_PROD=4,OPT_EXP=5,OPT_FACT=6,OPT_BIN=7,OPT_RAND=8,OPT_GRAPH=9}option_t;

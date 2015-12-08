@@ -2,7 +2,7 @@
 #define __GRAPHIC_H__
 
 #define OPT_LENGTH 6
-
+#define MSG_PRINT_IN_PROGRESS "Impresion en progreso"
 #ifndef __PIXEL_LENGTH__
 #define X_LENGTH_PIXELS 600
 #define Y_LENGTH_PIXELS 600
@@ -92,8 +92,8 @@ typedef struct func
 t_graph_opt askFunction(bool_t*);
 t_func initializeXY(void);
 t_func SolveFunction(t_graph_opt,bool_t*);
-void functionToGraph(t_func,bool_t*, char []);
-void printMatrizPMB(bool_t[Y_LENGTH_PIXELS][X_LENGTH_PIXELS], char []);
+void functionToGraph(t_func,bool_t*, char*);
+void printMatrizPMB(bool_t[Y_LENGTH_PIXELS][X_LENGTH_PIXELS], char*);
 /*--Transformaciones--*/
 float xPixToGraph(int X);
 int xGraphToPix(float X);

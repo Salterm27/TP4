@@ -5,7 +5,7 @@
 #define MSG_ERROR_OPERATION "Solo se puede multiplicar, restar o sumar"
 #define MSG_INFINITY "Infinito\n"
 #define MIN_BUFFER_LENGTH 10 /*MIN LENGTH  "#calculate" */
-
+#define ZERO_CHAR '0'
 #ifndef __BOOL_T__
 #define __BOOL_T__
 typedef enum{TRUE=1,FALSE=0}bool_t;

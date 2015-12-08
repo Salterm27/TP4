@@ -27,7 +27,7 @@ int main(int argc,char* argv[]) {
     for (count = 1; count<argc;count++) {
         /*Para agregar los nombres o rutas de archivos necesito modificar primero las funciones, para saber como transmitir*/
         /*la informacion*/
-        if (strcmp(argv[count],"-p") == 0){
+        if (strcmp(argv[count],PRESITION_TOLKEN) == 0){
 
             if (atoi(argv[count+1]) <= 0) {
                 printf(MSG_ERROR_ARG_PRESITION);
@@ -35,23 +35,23 @@ int main(int argc,char* argv[]) {
             }
             else arg.presition = atoi(argv[count+1]);
         }
-        if (strcmp(argv[count],"superCalc") == 0){
+        if (strcmp(argv[count],SUPERCALC_STRING) == 0){
             arg.calcType = SUPER_SEL;
         }
-        if ((strcmp(argv[count],"simpleCalc") == 0)) {
+        if ((strcmp(argv[count],SIMPLECALC_STRING) == 0)) {
             arg.calcType = SIMPLE_SEL;
         }
         else if (count == argc) {
             printf(MSG_ERROR_INPUT);
         }
-        if (strcmp(argv[count],"-o") == 0){
+        if (strcmp(argv[count],OUTPUT_TOLKEN) == 0){
             arg.output = (char*)malloc (sizeof(char)*(strlen(argv[count+1])+1));
             if (arg.output==NULL){
                 printf(MSG_ERROR_MEMORY);
             }
             else strcpy (arg.output, argv[count+1]);
         }
-        if (strcmp(argv[count],"-i") == 0){
+        if (strcmp(argv[count],INPUT_TOLKEN) == 0){
             arg.input = (char*)malloc (sizeof(char)*(strlen(argv[count+1])+1));
             if (arg.input==NULL){
                 printf(MSG_ERROR_MEMORY);
