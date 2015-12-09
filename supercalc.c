@@ -521,14 +521,6 @@ result_state_t multiply(operation_t* oper,int precision) {
     for(i=0;i<precision;i++){
         addValue(&ans,bufferAns[i]);
     }
-    while (ans->sig != NULL) { /*recorre hasta el final*/
-        ans=ans->sig;
-    }
-    while (ans->val == 0 && ans->ant !=NULL) {
-        ans=ans->ant;
-        free(ans->sig);
-        ans->sig = NULL;
-    }
     (*oper).ans = ans;
     free(bufferAns);
     return OK;
