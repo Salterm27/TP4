@@ -193,7 +193,7 @@ t_func SolveFunction(t_graph_opt opt,bool_t* errorFlagPointer)
     return funcion;
 }
 /*------------------------------------------*/
-void functionToGraph(t_func funcion,bool_t* errorFlagPointer,char output [FILE_NAME_MAX])
+void functionToGraph(t_func funcion,bool_t* errorFlagPointer,char* output)
 {
 
     int x,y,i;

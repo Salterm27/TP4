@@ -1,6 +1,12 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#define PRESITION_TOLKEN "-p"
+#define INPUT_TOLKEN "-i"
+#define OUTPUT_TOLKEN "-o"
+#define SUPERCALC_TOLKEN "superCalc"
+#define SIMPLECALC_TOLKEN "simpleCalc"
+
 /*---Mensaje del menu--------------------------------------------------------------------------------------------*/
 #define MENU_TITULO "\t\tMENU\n"
 #define MENU_SEPARATOR "==============\n"

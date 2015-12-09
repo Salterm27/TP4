@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -pedantic -ansi
-OUTPUT = main.exe
+OUTPUT = tp4
 all: main simplecalc supercalc numeric graphic
 	$(CC) $(CFLAGS) -o $(OUTPUT) *o -lm
 main:

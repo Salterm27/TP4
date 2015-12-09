@@ -1,6 +1,10 @@
 #ifndef __SUPERCALC_H__
 #define __SUPERCALC_H__
 
+#define ZERO_CHAR '0'
+#define SUB_CHAR '-'
+#define ADD_CHAR '+'
+#define MUX_CHAR '*'
 #define CALCULATE_TOLKEN "#calculate"
 #define MSG_ERROR_OPERATION "Solo se puede multiplicar, restar o sumar"
 #define MSG_INFINITY "Infinito\n"
