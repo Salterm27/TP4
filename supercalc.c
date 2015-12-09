@@ -492,7 +492,7 @@ result_state_t multiply(operation_t* oper,int precision) {
     }
     if (lista1Length+lista2Length-1>precision)
         return OFW;
-    bufferAns = (short*)calloc(precision+1,sizeof(short));
+    bufferAns = (short*)calloc(precision,sizeof(short));
     if (bufferAns == NULL)
         return ERR;
     for (j=0; lista2!=NULL;j++,lista2=lista2->ant) /*RECORRO VECTOR 2*/
@@ -513,10 +513,12 @@ result_state_t multiply(operation_t* oper,int precision) {
     {
         if (lista1Length+lista2Length-1 < precision)
             bufferAns[lista1Length+lista2Length -1] = suma/10;
-        else
+        else{
             return OFW;
+            free(bufferAns);
+        }
     }
-    for(i=0;i<precision+1;i++){
+    for(i=0;i<precision;i++){
         addValue(&ans,bufferAns[i]);
     }
     while (ans->sig != NULL) { /*recorre hasta el final*/
