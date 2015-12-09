@@ -18,11 +18,11 @@ int main(int argc,char* argv[]) {
     int count;
     arg.input=NULL;
     arg.output=NULL;
-    if (argc == 1) {    /* pocos parametros de entrada*/
+    if (argc == 1) {    /* pocos parametros de entrada (solo el comando de ejecucion)*/
         printf(MSG_ERROR_ARG);
         return EXIT_FAILURE;
     }
-    arg.presition = 100; /*default precision*/
+    arg.presition = DEFAULT_PRESITION; /*default */
     arg.calcType = NO_ASIGN;/*no se asigno ninguna calculadora valida*/
     for (count = 1; count<argc;count++) {
         /*Para agregar los nombres o rutas de archivos necesito modificar primero las funciones, para saber como transmitir*/
@@ -35,10 +35,10 @@ int main(int argc,char* argv[]) {
             }
             else arg.presition = atoi(argv[count+1]);
         }
-        if (strcmp(argv[count],SUPERCALC_STRING) == 0){
+        if (strcmp(argv[count],SUPERCALC_TOLKEN) == 0){
             arg.calcType = SUPER_SEL;
         }
-        if ((strcmp(argv[count],SIMPLECALC_STRING) == 0)) {
+        if ((strcmp(argv[count],SIMPLECALC_TOLKEN) == 0)) {
             arg.calcType = SIMPLE_SEL;
         }
         else if (count == argc) {

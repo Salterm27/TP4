@@ -1,6 +1,13 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#define DEFAULT_PRESITION 100
+#define SUPERCALC_TOLKEN "superCalc"
+#define SIMPLECALC_TOLKEN "simpleCalc"
+#define INPUT_TOLKEN "-i"
+#define OUTPUT_TOLKEN "-o"
+#define PRESITION_TOLKEN "-p"
+
 /*---Mensaje del menu--------------------------------------------------------------------------------------------*/
 #define MENU_TITULO "\t\tMENU\n"
 #define MENU_SEPARATOR "==============\n"
@@ -48,13 +55,6 @@
 #define Y_LENGTH_PIXELS 600 /*es la resolucion del eje Y del grafico*/
 #define FILE_NAME_MAX 50 /*es la longitud maxima del nombre del archivo*/
 #endif
-
-/*--Tolkens de entrada--*/
-#define INPUT_TOLKEN "-i"
-#define OUTPUT_TOLKEN "-o"
-#define PRESITION_TOLKEN "-p"
-#define SUPERCALC_STRING "superCalc"
-#define SIMPLECALC_STRING "simpleCalc"
 
 #ifndef __OPTION_T__
 #define __OPTION_T__
