@@ -210,13 +210,10 @@ void printListBackwards(t_nodo* list,FILE* file)
 {
     while (list->sig != NULL) /*recorre hasta el final*/
         list=list->sig;
+    while (list->val == 0 && list->ant != NULL)
+        list = list->ant;
     while (list != NULL)
     {
-        while (list->val == 0){
-            list = list->ant;
-            free(list->sig);
-            list->sig = NULL;
-        }
         fprintf(file,"%hi",list->val);
         list=list->ant;
     }
