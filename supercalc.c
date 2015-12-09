@@ -514,8 +514,8 @@ result_state_t multiply(operation_t* oper,int precision) {
         if (lista1Length+lista2Length-1 < precision)
             bufferAns[lista1Length+lista2Length -1] = suma/10;
         else{
-            return OFW;
             free(bufferAns);
+            return OFW;
         }
     }
     for(i=0;i<precision;i++){
