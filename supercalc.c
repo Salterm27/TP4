@@ -26,33 +26,25 @@ int superCalc(int precision,char* input,char* output)
     if (input != NULL)
     {
         fp = fopen(input,"r");
-        while (strncmp(fgets(buffer,bufferLength,fp),CALCULATE_TOLKEN,strlen(CALCULATE_TOLKEN)) != 0) /*num1+num2+signos+op+\n*/
-        {
-            if (addOperation(&operations,&cantOp) == NULL)
-            {
-                printf(MSG_ERROR_MEMORY);
-            }
-            if (buffer == NULL)
-                (*(operations[cantOp-1])).st = OFW;
-            else
-                parseOperation(buffer,operations,cantOp,precision);
+        if (fp == NULL){
+            printf(MSG_ERROR_ARG);
+            return EXIT_FAILURE;
         }
-        fclose(fp);
     }
     else
+        fp = stdin;
+    while (strncmp(fgets(buffer,bufferLength,fp),CALCULATE_TOLKEN,strlen(CALCULATE_TOLKEN)) != 0) /*num1+num2+signos+op+\n*/
     {
-        while (strncmp(fgets(buffer,bufferLength,stdin),CALCULATE_TOLKEN,strlen(CALCULATE_TOLKEN)) != 0)
+        if (addOperation(&operations,&cantOp) == NULL)
         {
-            if (addOperation(&operations,&cantOp) == NULL)
-            {
-                printf(MSG_ERROR_MEMORY);
-            }
-            if (buffer == NULL)
-                (*(operations[cantOp-1])).st = OFW;
-            else
-                parseOperation(buffer,operations,cantOp,precision);
+            printf(MSG_ERROR_MEMORY);
         }
+        if (buffer == NULL)
+            (*(operations[cantOp-1])).st = OFW;
+        else
+            parseOperation(buffer,operations,cantOp,precision);
     }
+    fclose(fp);
     free(buffer);
     /*SOLVE OPERATIONS*/
     for(i=0;i<cantOp;i++)
